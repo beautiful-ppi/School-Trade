@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinyuan.mapper.TThingsComplainMapper">
+	<!-- 投诉 -->
+	<insert id="insertComplain" parameterType="com.jinyuan.domain.TThingsComplain">
+		insert into TThingsComplain(_id,_thing,because,memo,complain_date) values(${_id},${_thing},'${because}','${memo}','${complain_date}')
+	</insert>
+	
+	<!-- 投诉带图片 -->
+	<insert id="insertComplainWithPhoto" parameterType="com.jinyuan.domain.TThingsComplain">
+		insert into TThingsComplain values(${_id},${_thing},'${because}','${memo}','${complain_date}','${photo}')
+	</insert> 
+	
+	<!-- 调整售卖商品状态为被投诉 -->
+	<update id="updateTthingsIsComplaint">
+		update TThings set isComplaint=1 where _id=${_id}
+	</update>
+	
+	<!-- 调整需求商品被投诉 -->
+	<update id="updateTRequestIsComplaint">
+		update TRequests set isComplaint=1 where _id=${_id}
+	</update>
+	
+	<!-- 查看投诉信息 -->
+	<select id="selectComplaintInfos" resultType="java.util.Map">
+		select c._id,c._thing,c.because,c.memo,c.complain_date,c.photo,t.thing_name sell_thing_name,(select name from tuser where _id=t._buyer) sell_thing_buyer,
+		r.thing_name request_thing_name,
+   (select name from tuser where _id=r._owner) request_thing_buyer from 
+		tthingscomplain c left join tthings t on t._id=c._thing
+		left join trequests r on c._thing=r._id
+		where c._thing=${_thing}
+	</select>
+</mapper>

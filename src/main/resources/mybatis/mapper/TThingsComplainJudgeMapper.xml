@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinyuan.mapper.TThingsComplainJudgeMapper">
+	
+	<!-- 更新售卖商品仲裁状态 -->
+	<update id="updateThingsJudgeState">
+		update TThings set isJudged=1 where _id=${_id}
+	</update>
+	
+	<!-- 更新需求商品仲裁状态 -->
+	<update id="updateRequestIsJudge">
+		update trequests set isJudged=1 where _id=${_id}
+	</update>
+	
+	<!-- 对商品进行仲裁 -->
+	<insert id="insertJudgeResult" parameterType="com.jinyuan.domain.TThingsComplainJudge">
+		insert into TThingsComplainJudge values(${_id},${_complain},'${judge}','${judge_date}',${isAccepted})
+	</insert>
+	
+	<!-- 根据complain_id查看仲裁信息 -->
+	<select id="selectJudgeByComplain_id" resultType="com.jinyuan.domain.TThingsComplainJudge">
+		select * from tthingscomplainjudge where _complain=${_complain}
+	</select>
+	
+	<!-- 仲裁结果查看 -->
+	<select id="selectThingsJudge" resultType="java.util.Map">
+		select c._id complain_id,c.because complain_reason,c.memo complain_memo,c.complain_date,c._thing thing_id,j._id judge_id,j.judge judge_result,j.judge_date,
+		r._id resist_id,r.resist resist_content,r.resist_date,(select u.`name` from tthings  t inner join tuser u  on u._id=t._buyer where t._id=c._thing) sell_complainer,
+		(select thing_name from tthings where _id=c._thing) sell_thing_name,
+		(select thing_name from trequests where _id=c._thing) request_thing_name,
+		(select u.`name` from trequests request INNER JOIN tuser u on u._id=request._owner where request._id=c._thing) request_complainer
+		from tthingscomplain c 
+		left join tthingscomplainjudge j on c._id=j._complain 
+		left join tthingscomplainresist r on r._complain=c._id 
+ 
+		where c._thing=${_thing}
+	</select>
+	
+	<!-- 所有投诉和申诉信息 -->
+	<select id="selectAllComplainAndResist" resultType="java.util.Map">
+		<!-- select request._owner request_buyer,request.request_provider request_seller,request.thing_name request_thingName,request.finished_date request_finishiedDate,
+		c._id complain_id,t.thing_name sell_thingName,u.name sell_seller,(select name from tuser where _id=t._buyer) sell_buyer,c._thing,t.isJudged,t.finished_date sell_finishiDate,c.complain_date,r.resist_date 
+		from tthingscomplain c 
+		left join tthingscomplainresist r on c._id=r._complain
+		left join tthings t on t._id=c._thing and t.finished!=0
+		left join trequests request on request._id=c._thing and request.finished!=0
+		left join tuser u on u._id=t._owner -->
+		select DISTINCT (select name from tuser where _id=request._owner) request_buyer,(select name from tuser where _id=request.request_provider) request_seller,request.thing_name request_thingName,request.finished_date request_finishiedDate,
+		c._id complain_id,t.thing_name sell_thingName,u.name sell_seller,(select name from tuser where _id=t._buyer) sell_buyer,c._thing,t.isJudged,t.finished_date sell_finishiDate,c.complain_date,r.resist_date 
+		from tthingscomplain c 
+		left join tthingscomplainresist r on c._id=r._complain
+		left join tthings t on t._id=c._thing and t.finished!=0
+		left join trequests request on request._id=c._thing and request.finished!=0
+		left join tuser u on u._id=t._owner
+	</select>
+	
+	<!-- 未调解的投诉和申诉信息 -->
+	<select id="selectComplainAndResistNoAccepted" resultType="java.util.Map">
+		select DISTINCT request._owner request_buyer,request.request_provider request_seller,request.thing_name request_thingName,request.finished_date request_finishiedDate,
+		c._id complain_id,t.thing_name sell_thingName,u.name sell_seller,(select name from tuser where _id=t._buyer) sell_buyer,t.finished_date sell_finishiDate,c.complain_date,r.resist_date,
+    (select _thing from tthingscomplain where _id=c._id) _thing
+		from tthingscomplain c 
+		left join tthingscomplainresist r on c._id=r._complain
+		left join tthings t on t._id=c._thing and t.finished!=0
+		left join trequests request on request._id=c._thing and request.finished!=0
+		left join tuser u on u._id=t._owner
+		left join tthingscomplainjudge j on j._complain=c._id 
+		where j.isAccepted=0
+	</select>
+	
+	<!-- 接受调解的投诉和申诉信息 -->
+	<select id="selectComplainAndResistWithAccepted" resultType="java.util.Map">
+		select DISTINCT request._owner request_buyer,request.request_provider request_seller,request.thing_name request_thingName,request.finished_date request_finishiedDate,
+		c._id complain_id,t.thing_name sell_thingName,u.name sell_seller,(select name from tuser where _id=t._buyer) sell_buyer,t.finished_date sell_finishiDate,c.complain_date,r.resist_date 
+		from tthingscomplain c 
+		left join tthingscomplainresist r on c._id=r._complain
+		left join tthings t on t._id=c._thing and t.finished!=0
+		left join trequests request on request._id=c._thing and request.finished!=0
+		left join tuser u on u._id=t._owner
+		left join tthingscomplainjudge j on j._complain=c._id 
+		where j.isAccepted=1
+	</select>
+	
+	<!-- 根据complain_id查看投诉申诉详情 -->
+	<select id="selectDetailComplainAndResistByComplain_id" resultType="java.util.Map">
+		select request._owner request_buyer_id,(select account from tuser where _id=request._owner) request_buyer_account,(select name from tuser where _id=request._owner) request_buyer_name,
+		request.request_provider request_seller_id,(select account from tuser where _id=request.request_provider) request_seller_account,
+		(select name from tuser where _id=request.request_provider) request_seller_name,
+		request.finished_date request_finishiedDate,request.memo request_memo,
+		c._id complain_id,t._owner sell_seller_id,
+		u.name sell_seller_name,u.account sell_seller_account,t._buyer sell_buyer_id,(select name from tuser where _id=t._buyer) sell_buyer_name,
+		(select account from tuser where _id=t._buyer) sell_buyer_account
+		,t.memo sell_memo,
+    	t.finished_date sell_finishiDate,c.complain_date,c.memo complain_memo,r.resist
+		from tthingscomplain c 
+		left join tthingscomplainresist r on c._id=r._complain
+		left join tthings t on t._id=c._thing and t.finished!=0
+		left join trequests request on request._id=c._thing and request.finished!=0
+		left join tuser u on u._id=t._owner
+		where c._id=${_id}
+	</select>
+	
+	<!-- 设置为已调解状态 -->
+	<update id="updateStateToAccepted">
+		update tthingscomplainjudge set isAccepted=1 where _complain=${_complain}
+	</update>
+</mapper>

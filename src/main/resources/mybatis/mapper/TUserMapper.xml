@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinyuan.mapper.TUserMapper">
+
+    <!-- 查找每个月份注册用户数量 -->
+    <select id="selectUserCountsByMonth" resultType="java.util.Map">
+		select DISTINCT(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=1 and year(date_format(register_date,'%Y-%m-%d'))=#{value1}) one,
+		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=2 and year(date_format(register_date,'%Y-%m-%d'))=#{value2}) two,
+		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=3 and year(date_format(register_date,'%Y-%m-%d'))=#{value3}) three,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=4 and year(date_format(register_date,'%Y-%m-%d'))=#{value4}) four,
+		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=5 and year(date_format(register_date,'%Y-%m-%d'))=#{value5}) five,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=6 and year(date_format(register_date,'%Y-%m-%d'))=#{value6}) six,
+		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=7 and year(date_format(register_date,'%Y-%m-%d'))=#{value7}) seven,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=8 and year(date_format(register_date,'%Y-%m-%d'))=#{value8}) eight,
+		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=9 and year(date_format(register_date,'%Y-%m-%d'))=#{value9}) nine,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=10 and year(date_format(register_date,'%Y-%m-%d'))=#{value10}) ten,
+		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=11 and year(date_format(register_date,'%Y-%m-%d'))=#{value10}) eleven,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=12 and year(date_format(register_date,'%Y-%m-%d'))=#{value12}) twelve
+		from tuser
+
+	</select>
+
+    <!-- 所有不诚信用户 分页交给前台-->
+    <select id="selectUnhonestUsers" resultType="java.util.Map">
+		select DISTINCT(select _id from tuser where _id=t._owner) sell_seller_id,(select account from tuser where _id=t._owner) sell_seller_account,(select name from tuser where _id=t._owner) sell_seller_name,
+		(select mobile from tuser where _id=t._owner) sell_seller_mobile,(select department from tuser where _id=t._owner) sell_seller_department,
+		(select _class from tuser where _id=t._owner) sell_seller_class,(select state from tuser where _id=t._owner) sell_seller_state,
+		(select _id from tuser where _id=request.request_provider) request_seller_id,
+		(select account from tuser where _id=request.request_provider) request_seller_account,(select name from tuser where _id=request.request_provider) request_seller_name,
+		(select mobile from tuser where _id=request.request_provider) request_seller_mobile,(select department from tuser where _id=request.request_provider) request_seller_department,
+		(select _class from tuser where _id=request.request_provider) request_seller_class,(select state from tuser where _id=request.request_provider) request_seller_state
+		from tthingscomplainresist r
+		left join tthingscomplain c on r._complain=c._id
+		LEFT JOIN tthings t on t._id=c._thing
+		left join trequests request on request._id=c._id
+		left join tthingscomplainjudge j on j._complain=c._id
+		where resist_date >(select DATE_ADD(c.complain_date,INTERVAL 15 DAY) complain_time from tthingscomplain c where _id=r._complain)
+		or j.isAccepted=0
+	</select>
+
+    <!--  条件查询不诚信用户 -->
+    <select id="selectUnhonesUsersByCondition" resultType="java.util.Map">
+		select (select _id from tuser where _id=t._owner) sell_seller_id,(select account from tuser where _id=t._owner) sell_seller_account,(select name from tuser where _id=t._owner) sell_seller_name,
+		(select mobile from tuser where _id=t._owner) sell_seller_mobile,(select department from tuser where _id=t._owner) sell_seller_department,
+		(select _class from tuser where _id=t._owner) sell_seller_class,(select state from tuser where _id=t._owner) sell_seller_state,
+		(select _id from tuser where _id=request.request_provider) request_seller_id,
+		(select account from tuser where _id=request.request_provider) request_seller_account,(select name from tuser where _id=request.request_provider) request_seller_name,
+		(select mobile from tuser where _id=request.request_provider) request_seller_mobile,(select department from tuser where _id=request.request_provider) request_seller_department,
+		(select _class from tuser where _id=request.request_provider) request_seller_class,(select state from tuser where _id=request.request_provider) request_seller_state
+		from tthingscomplainresist r
+		left join tthingscomplain c on r._complain=c._id
+		LEFT JOIN tthings t on t._id=c._thing
+		left join trequests request on request._id=c._id
+		left join tthingscomplainjudge j on j._complain=c._id
+		where (resist_date >(select DATE_ADD(c.complain_date,INTERVAL 15 DAY) complain_time from tthingscomplain c where _id=r._complain)
+		or j.isAccepted=0) and ( (select account from tuser where _id=t._owner) like CONCAT('%',#{queryCondition},'%') or (select name from tuser where _id=t._owner) like CONCAT('%',#{queryCondition},'%')
+ 		or (select account from tuser where _id=request.request_provider) like CONCAT('%',#{queryCondition},'%') or (select name from tuser where _id=request.request_provider)  like CONCAT('%',#{queryCondition},'%'))
+
+	</select>
+
+    <!-- 查询所有用户分页交给前台 -->
+    <select id="selectAllUsers" resultType="com.jinyuan.domain.TUser">
+		select * from tuser
+	</select>
+
+    <!-- 条件查询 -->
+    <select id="selectUsersByCondition" resultType="com.jinyuan.domain.TUser">
+		select * from tuser where account like CONCAT('%',#{queryCondition},'%') or name like CONCAT('%',#{queryCondition},'%')
+	</select>
+
+    <!-- 不诚信交易详情信息 -->
+    <select id="selectUnhonestTradeDetail" resultType="java.util.Map">
+	select DISTINCT t._owner sell_seller_id,request.request_provider,(select account from tuser where _id=t._buyer) sell_buyer_account,(select name from tuser where _id=t._buyer) sell_buyer_name,(select account from tuser where _id=t._owner) sell_seller_account,(select name from tuser where _id=t._owner) sell_seller_name,
+		(select account from tuser where _id=request._owner) request_buyer_account,(select name from tuser where _id=request._owner) request_buyer_name,
+		(select account from tuser where _id=request.request_provider) request_seller_account,(select name from tuser where _id=request.request_provider) request_seller_name
+		,t.memo sell_memo,request.memo request_memo,t.finished_date sell_trade_date,request.finished_date request_trade_date,c.complain_date,c.memo complain_memo,r.resist
+		from tthingscomplainresist r
+		left join tthingscomplain c on r._complain=c._id
+		LEFT JOIN tthings t on t._id=c._thing
+  		left join tuser u on t._owner=u._id
+		left join trequests request on request._id=c._id
+		left join tthingscomplainjudge j on j._complain=c._id
+		where (resist_date>(select DATE_ADD(c.complain_date,INTERVAL 15 DAY) complain_time from tthingscomplain c where _id=r._complain)
+		or j.isAccepted=0) and c._id=${_id}
+
+	</select>
+
+    <!-- 查看不诚信用户类型 -->
+    <select id="selectDetailUnhonestUser" resultType="java.util.Map">
+
+		select DISTINCT c._id complain_id,(select name from tuser where _id=t._owner) sell_seller_name,
+ 		(select name from tuser where _id=t._buyer) sell_buyer_name,
+ 		t.finished_date sell_trade_date,
+ 		(select name from tuser where _id=request._owner) request_buyer_name,
+		(select name from tuser where _id=request.request_provider) request_seller_name,
+		request.finished_date request_trade_date,request.thing_name request_thing_name,t.thing_name sell_thing_name,j.isAccepted
+
+		from tthingscomplainresist r
+		left join tthingscomplain c on r._complain=c._id
+		LEFT JOIN tthings t on t._id=c._thing
+		left join trequests request on request._id=c._id
+		left join tthingscomplainjudge j on j._complain=c._id
+		where (resist_date >(select DATE_ADD(c.complain_date,INTERVAL 15 DAY) complain_time from tthingscomplain c where _id=r._complain)
+		or j.isAccepted=0) and (request.request_provider=${request_provider} or t._owner=${_owner})
+	</select>
+
+    <!-- 根据查询条件显示不诚信用户 -->
+    <!-- <select id="selectUnhonestUserByCondition" parameterType="com.org.util.Page" resultType="java.util.Map">
+        select c._id,(select account from tuser where _id=t._owner) sell_seller_account,(select name from tuser where _id=t._owner) sell_seller_name,
+        (select mobile from tuser where _id=t._owner) sell_seller_mobile,(select department from tuser where _id=t._owner) sell_seller_department,
+        (select _class from tuser where _id=t._owner) sell_seller_class,(select state from tuser where _id=t._owner) sell_seller_state,
+        (select account from tuser where _id=request.request_provider) request_seller_account,(select name from tuser where _id=request.request_provider) request_seller_name,
+        (select mobile from tuser where _id=request.request_provider) request_seller_mobile,(select department from tuser where _id=request.request_provider) request_seller_department,
+        (select _class from tuser where _id=request.request_provider) request_seller_class,(select state from tuser where _id=request.request_provider) request_seller_state
+        from tthingscomplainresist r
+        left join tthingscomplain c on r._complain=c._id
+        LEFT JOIN tthings t on t._id=c._thing
+        left join trequests request on request._id=c._id
+        left join tthingscomplainjudge j on j._complain=c._id
+        where resist_date >(select DATE_ADD(c.complain_date,INTERVAL 15 DAY) complain_time from tthingscomplain c where _id=r._complain)
+        or j.isAccepted=2   and (u.name like CONCAT('%',#{queryCondition},'%') or u.account like CONCAT('%',#{queryCondition},'%'))
+
+        select (select _id from tuser where _id=t._owner) sell_seller_id,(select account from tuser where _id=t._owner) sell_seller_account,(select name from tuser where _id=t._owner) sell_seller_name,
+        (select mobile from tuser where _id=t._owner) sell_seller_mobile,(select department from tuser where _id=t._owner) sell_seller_department,
+        (select _class from tuser where _id=t._owner) sell_seller_class,(select state from tuser where _id=t._owner) sell_seller_state,
+        (select _id from tuser where _id=request.request_provider) request_seller_id,
+        (select account from tuser where _id=request.request_provider) request_seller_account,(select name from tuser where _id=request.request_provider) request_seller_name,
+        (select mobile from tuser where _id=request.request_provider) request_seller_mobile,(select department from tuser where _id=request.request_provider) request_seller_department,
+        (select _class from tuser where _id=request.request_provider) request_seller_class,(select state from tuser where _id=request.request_provider) request_seller_state
+        from tthingscomplainresist r
+        left join tthingscomplain c on r._complain=c._id
+        LEFT JOIN tthings t on t._id=c._thing
+        left join trequests request on request._id=c._id
+        left join tthingscomplainjudge j on j._complain=c._id
+        where (resist_date >(select DATE_ADD(c.complain_date,INTERVAL 15 DAY) complain_time from tthingscomplain c where _id=r._complain)
+        or j.isAccepted=2) and ( (select account from tuser where _id=t._owner) like CONCAT('%',#{queryCondition},'%') or (select name from tuser where _id=t._owner) like CONCAT('%',#{queryCondition},'%')
+         or (select account from tuser where _id=request.request_provider) like CONCAT('%',#{queryCondition},'%') or (select name from tuser where _id=request.request_provider)  like CONCAT('%',#{queryCondition},'%'))
+
+    </select> -->
+
+    <!-- 分页显示不诚信用户 -->
+    <!-- <select id="selectUnhonestUser" parameterType="com.org.util.Page" resultType="java.util.Map">
+        select (select _id from tuser where _id=t._owner) sell_seller_id,(select account from tuser where _id=t._owner) sell_seller_account,(select name from tuser where _id=t._owner) sell_seller_name,
+        (select mobile from tuser where _id=t._owner) sell_seller_mobile,(select department from tuser where _id=t._owner) sell_seller_department,
+        (select _class from tuser where _id=t._owner) sell_seller_class,(select state from tuser where _id=t._owner) sell_seller_state,
+        (select _id from tuser where _id=request.request_provider) request_seller_id,
+        (select account from tuser where _id=request.request_provider) request_seller_account,(select name from tuser where _id=request.request_provider) request_seller_name,
+        (select mobile from tuser where _id=request.request_provider) request_seller_mobile,(select department from tuser where _id=request.request_provider) request_seller_department,
+        (select _class from tuser where _id=request.request_provider) request_seller_class,(select state from tuser where _id=request.request_provider) request_seller_state
+        from tthingscomplainresist r
+        left join tthingscomplain c on r._complain=c._id
+        LEFT JOIN tthings t on t._id=c._thing
+        left join trequests request on request._id=c._id
+        left join tthingscomplainjudge j on j._complain=c._id
+        where resist_date >(select DATE_ADD(c.complain_date,INTERVAL 15 DAY) complain_time from tthingscomplain c where _id=r._complain)
+        or j.isAccepted=2
+        limit #{startRow},#{pageSize}
+    </select> -->
+
+    <!-- 所有不诚信用户信息 -->
+    <!-- <select id="selectTotalUnhonestUser" parameterType="com.org.util.Page" resultType="java.lang.Integer">
+        select count(*) totalNumber from tthingscomplainresist r
+        left join tthingscomplain c on r._complain=c._id
+        LEFT JOIN tthings t on t._id=c._thing
+        left join tthingscomplainjudge j on j._complain=c._id
+        where resist_date>(select DATE_ADD(c.complain_date,INTERVAL 15 DAY) complain_time from tthingscomplain c where _id=r._complain)
+        or j.isAccepted=2
+    </select> -->
+
+    <!-- 分页显示用户信息 -->
+    <!-- <select id="selectUserByPage" parameterType="com.org.util.Page" resultMap="tuser">
+        select * from tuser limit #{startRow},#{pageSize}
+    </select>
+    <resultMap type="com.org.entity.TUser" id="tuser">
+        <id column="_id" property="_id"></id>
+        <result column="account" property="account"></result>
+        <result column="password" property="password"></result>
+        <result column="name" property="name"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="weixin" property="weixin"></result>
+        <result column="department" property="department"/>
+        <result column="_class" property="_class"/>
+        <result column="photo" property="photo"/>
+        <result column="register_date" property="register_date"/>
+        <result column="state" property="state"/>
+        <result column="grade" property="grade"/>
+    </resultMap> -->
+
+    <!-- 根据条件显示用户信息 -->
+    <!-- <select id="selectUserWithPageByCondition" parameterType="com.org.util.Page" resultMap="tuser">
+        select * from tuser
+        <where>
+            <if test="queryCondition!=null">
+                name like CONCAT('%',#{queryCondition},'%') or account like CONCAT('%',#{queryCondition},'%')
+            </if>
+        </where>
+    </select>	 -->
+
+    <!-- 获取总用户数量 -->
+    <!-- <select id="selectAllUserCounts" parameterType="com.org.util.Page" resultType="java.lang.Integer">
+        select count(_id) from tuser
+    </select> -->
+
+    <!-- 重置密码 -->
+    <update id="resetPassword">
+		update tuser set password=md5('12345') where _id=${_id}
+	</update>
+
+    <!-- 根据_id启用用户 -->
+    <update id="startUser">
+		update tuser set state=1 where _id=${_id}
+	</update>
+
+    <!-- 根据_id禁用用户 -->
+    <update id="forbiddenUser">
+		update tuser set state=2 where _id=${_id}
+	</update>
+
+    <!-- 根据账号或姓名查询用户 -->
+    <select id="selectUserByAccountAndName" resultType="com.jinyuan.domain.TUser">
+		select * from tuser where name='${name}' or account='${account}'
+	</select>
+
+    <!-- 根据_id修改个人信息，不带图片 -->
+    <update id="updatePersonalInfoNoPhoto">
+		update tuser set name='${name}',mobile='${mobile}',weixin='${weixin}',department='${department}',
+		_class='${_class}' where _id=${_id}
+	</update>
+
+    <!-- 根据_id修改个人信息，带图片 -->
+    <update id="updatePersonalInfoWithPhoto">
+		update tuser set name='${name}',mobile='${mobile}',weixin='${weixin}',department='${department}',
+		_class='${_class}',photo='${photo}' where _id=${_id}
+	</update>
+
+
+    <!-- 根据_id查找个人资料 -->
+    <select id="selectUserDetailInfo" resultType="com.jinyuan.domain.TUser">
+		select * from tuser where _id=${_id}
+	</select>
+
+    <!-- 登录 -->
+    <select id="selectUserByAccountAndPassword" resultType="com.jinyuan.domain.TUser">
+		select * from tuser where account='${account}' and password=md5('${password}')
+	</select>
+
+    <!-- 查找所有用户 -->
+    <select id="selectAllUser" resultType="com.jinyuan.domain.TUser">
+		select * from tuser
+	</select>
+
+    <!-- 注册 -->
+    <insert id="insertUserWithPhoto" parameterType="com.jinyuan.domain.TUser">
+		insert into tuser
+		values(${_id},'${account}',md5('${password}'),'${name}','${mobile}','${weixin}','${department}','${_class}','${photo}','${register_date}',${state},${grade})
+	</insert>
+
+    <!-- 用来判断账号是否已经注册过 -->
+    <select id="selectUserByAccount" resultType="com.jinyuan.domain.TUser">
+		select * from tuser where account='${account}'
+	</select>
+
+    <!-- 查看我的交易 -->
+    <select id="selectMyTrade" resultType="java.util.Map">
+		select t._id sell_things_id,t.thing_name sell_things_name,
+		t._buyer,t._owner seller_id,t.finished_date sell_date,
+		r._id request_things_id,r.finished_date request_date,r.thing_name request_things_name,
+		r._owner requester_id
+		from tthings t,trequests r WHERE t.finished!=0 and r.finished!=0
+	</select>
+
+    <!-- 查看个人信息 -->
+    <select id="selectPersonInformation" resultType="java.util.Map">
+		select *,(select count(*) from tsystemmessage where _user=#{_user1}) systemMessage_count,
+		(select count(*) from TRequestMatch where _user=#{_user2}) requestMatch_count
+		 from tuser  where _id=#{_id}
+	</select>
+</mapper>

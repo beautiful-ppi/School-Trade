@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinyuan.mapper.TManagerMapper">
+
+	
+	<!-- 显示所有管理员数，前台实现分页 -->
+	<select id="selectAllManagers" resultType="com.jinyuan.domain.TManager">
+		select * from TManager
+	</select>
+	<!-- 分页显示管理员信息 -->
+	<!-- <select id="selectAdminByPage" parameterType="com.org.util.Page" resultMap="tmanager">
+		select * from TManager limit #{startRow},#{pageSize}
+	</select>
+	<resultMap type="com.org.entity.TManager" id="tmanager">
+		<id property="_id" column="_id"/>
+		<result property="account" column="account"/>
+		<result property="password" column="password"/>
+		<result property="name" column="name"/>
+		<result property="mobile" column="mobile"/>
+		<result property="weixin" column="weixin"/>	
+		<result property="photo" column="photo"/>	
+		<result property="create_date" column="create_date"/>	
+		<result property="level" column="level"/>	
+		<result property="state" column="state"/>	
+	</resultMap> -->
+	
+	<!-- 显示总管理员数 -->
+	<!-- <select id="selectAdminUserCounts" resultType="java.lang.Integer" >
+		select count(_id) from TManager
+	</select> -->
+
+	<!-- 添加管理员 -->
+	<insert id="insertAdminastrator" parameterType="com.jinyuan.domain.TManager">
+		insert into TManager values(${_id},'${account}',md5('${password}'),
+		'${name}','${mobile}','${weixin}','${photo}','${create_date}',${level},${state})
+	</insert>
+	
+	<!-- 根据account查找管理员存不存在 -->
+	<select id="selectAdminastratorByAccount" resultType="com.jinyuan.domain.TManager">
+		select * from TManager where account='${account}'
+	</select>
+	
+	<!-- 管理员登录 -->
+	<select id="selectAdminastratorByAccountAndPass" resultType="com.jinyuan.domain.TManager">
+		select * from TManager where account='${account}' and password=md5('${password}')
+	</select>
+
+	<!-- 编辑管理员，修改图片 -->
+	<update id="updateManagerWithPhoto">
+		update TManager set password=md5('${password}'),name='${name}',
+		mobile='${mobile}',weixin='${weixin}',photo='${photo}' where _id=${_id}
+	</update>
+	
+	<!-- 根据_id删除用户 -->
+	<delete id="deleteManagerById">
+		delete from TManager where _id=${_id}
+	</delete>
+	
+	<!-- 根据管理员id显示管理员详细信息 -->
+	<select id="selectDetailManageById" resultType="com.jinyuan.domain.TManager">
+		select * from TManager where _id=${_id}
+	</select>
+</mapper>

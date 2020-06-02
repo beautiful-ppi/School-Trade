@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinyuan.mapper.TTradeMapper">
+	
+	<!-- 每个月售卖商品已交易 -->
+	<select id="ThingIsTradedByMonth" resultType="java.util.Map">
+		select DISTINCT
+		(select count(*) from tthings where month(date_format(finished_date,'%Y-%m-%d'))=1 and year(date_format(finished_date,'%Y-%m-%d'))=#{value1} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY) ) one,
+ 		(select count(*) from tthings where month(date_format(finished_date,'%Y-%m-%d'))=2 and year(date_format(finished_date,'%Y-%m-%d'))=#{value2} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY) ) two,
+ 		(select count(*) from tthings where month(date_format(finished_date,'%Y-%m-%d'))=3 and year(date_format(finished_date,'%Y-%m-%d'))=#{value3} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY) ) three,
+ 		(select count(*) from tthings where month(date_format(finished_date,'%Y-%m-%d'))=4 and year(date_format(finished_date,'%Y-%m-%d'))=#{value4} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) four,
+ 		(select count(*) from tthings where month(date_format(finished_date,'%Y-%m-%d'))=5 and year(date_format(finished_date,'%Y-%m-%d'))=#{value5} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) five,
+ 		(select count(*) from tthings where month(date_format(finished_date,'%Y-%m-%d'))=6 and year(date_format(finished_date,'%Y-%m-%d'))=#{value6} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) six,
+ 		(select count(*) from tthings where month(date_format(finished_date,'%Y-%m-%d'))=7 and year(date_format(finished_date,'%Y-%m-%d'))=#{value7} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) seven,
+ 		(select count(*) from tthings where month(date_format(finished_date,'%Y-%m-%d'))=8 and year(date_format(finished_date,'%Y-%m-%d'))=#{value8} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) eight,
+ 		(select count(*) from tthings where month(date_format(finished_date,'%Y-%m-%d'))=9 and year(date_format(finished_date,'%Y-%m-%d'))=#{value9} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) nine,
+ 		(select count(*) from tthings where month(date_format(finished_date,'%Y-%m-%d'))=10 and year(date_format(finished_date,'%Y-%m-%d'))=#{value10} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) ten,
+ 		(select count(*) from tthings where month(date_format(finished_date,'%Y-%m-%d'))=11 and year(date_format(finished_date,'%Y-%m-%d'))=#{value11} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) eleven,
+ 		(select count(*) from tthings where month(date_format(finished_date,'%Y-%m-%d'))=12 and year(date_format(finished_date,'%Y-%m-%d'))=#{value12} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) twelve
+ 		from tthings 
+	</select>
+	
+	<!--每个月需求商品已交易-->
+	<select id="RequestIsTradedByMonth" resultType="java.util.Map"> 
+		 select DISTINCT (select count(*) from trequests where month(date_format(finished_date,'%Y-%m-%d'))=1 and year(date_format(finished_date,'%Y-%m-%d'))=#{value1} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY) ) one,
+		(select count(*) from trequests where month(date_format(finished_date,'%Y-%m-%d'))=2 and year(date_format(finished_date,'%Y-%m-%d'))=#{value2} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY) ) two,
+ 		(select count(*) from trequests where month(date_format(finished_date,'%Y-%m-%d'))=3 and year(date_format(finished_date,'%Y-%m-%d'))=#{value3} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY) ) three,
+		(select count(*) from trequests where month(date_format(finished_date,'%Y-%m-%d'))=4 and year(date_format(finished_date,'%Y-%m-%d'))=#{value4} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) four,
+ 		(select count(*) from trequests where month(date_format(finished_date,'%Y-%m-%d'))=5 and year(date_format(finished_date,'%Y-%m-%d'))=#{value5} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) five,
+ 		(select count(*) from trequests where month(date_format(finished_date,'%Y-%m-%d'))=6 and year(date_format(finished_date,'%Y-%m-%d'))=#{value6} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) six,
+ 		(select count(*) from trequests where month(date_format(finished_date,'%Y-%m-%d'))=7 and year(date_format(finished_date,'%Y-%m-%d'))=#{value7} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) seven,
+		(select count(*) from trequests where month(date_format(finished_date,'%Y-%m-%d'))=8 and year(date_format(finished_date,'%Y-%m-%d'))=#{value8} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) eight,
+ 		(select count(*) from trequests where month(date_format(finished_date,'%Y-%m-%d'))=9 and year(date_format(finished_date,'%Y-%m-%d'))=#{value9} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) nine,
+ 		(select count(*) from trequests where month(date_format(finished_date,'%Y-%m-%d'))=10 and year(date_format(finished_date,'%Y-%m-%d'))=#{value10} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) ten,
+		(select count(*) from trequests where month(date_format(finished_date,'%Y-%m-%d'))=11 and year(date_format(finished_date,'%Y-%m-%d'))=#{value11} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) eleven,
+		(select count(*) from trequests where month(date_format(finished_date,'%Y-%m-%d'))=12 and year(date_format(finished_date,'%Y-%m-%d'))=#{value12} and finished!=0 and finished_date&gt;=publish_date and finished_date&lt;=DATE_ADD(publish_date,INTERVAL 31 DAY)) twelve
+ 		from trequests
+		
+	</select>
+	
+	<!-- 每个月需求商品未交易 -->
+	<select id="RequestNoTradeByMonth" resultType="java.util.Map">
+	 	select DISTINCT 
+		(select count(*) from trequests where  year(date_format(publish_date,'%Y-%m-%d'))=#{value1} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=1  ) one,
+		(select count(*) from trequests where  year(date_format(publish_date,'%Y-%m-%d'))=#{value2} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=2  ) two,
+		(select count(*) from trequests where  year(date_format(publish_date,'%Y-%m-%d'))=#{value3} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=3  ) three,
+		(select count(*) from trequests where  year(date_format(publish_date,'%Y-%m-%d'))=#{value4} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=4  ) four,
+		(select count(*) from trequests where  year(date_format(publish_date,'%Y-%m-%d'))=#{value5} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=5  ) five,
+		(select count(*) from trequests where  year(date_format(publish_date,'%Y-%m-%d'))=#{value6} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=6  ) six,
+		(select count(*) from trequests where  year(date_format(publish_date,'%Y-%m-%d'))=#{value7} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=7  ) seven,
+		(select count(*) from trequests where  year(date_format(publish_date,'%Y-%m-%d'))=#{value8} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=8  ) eight,
+		(select count(*) from trequests where  year(date_format(publish_date,'%Y-%m-%d'))=#{value9} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=9  ) nine,
+		(select count(*) from trequests where  year(date_format(publish_date,'%Y-%m-%d'))=#{value10} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=10  ) ten,
+		(select count(*) from trequests where  year(date_format(publish_date,'%Y-%m-%d'))=#{value11} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=11  ) eleven,
+		(select count(*) from trequests where  year(date_format(publish_date,'%Y-%m-%d'))=#{value12} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=12 ) twelve
+		from trequests
+	</select>
+	
+	<!-- 每个月售卖商品未交易 -->
+	<select id="ThingNoTradeByMonth" resultType="java.util.Map">
+		
+		select DISTINCT 
+		(select count(*) from tthings where  year(date_format(publish_date,'%Y-%m-%d'))=#{value1} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=1  ) one,
+		(select count(*) from tthings where  year(date_format(publish_date,'%Y-%m-%d'))=#{value2} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=2  ) two,
+		(select count(*) from tthings where  year(date_format(publish_date,'%Y-%m-%d'))=#{value3} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=3  ) three,
+		(select count(*) from tthings where  year(date_format(publish_date,'%Y-%m-%d'))=#{value4} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=4  ) four,
+		(select count(*) from tthings where  year(date_format(publish_date,'%Y-%m-%d'))=#{value5} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=5  ) five,
+		(select count(*) from tthings where  year(date_format(publish_date,'%Y-%m-%d'))=#{value6} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=6  ) six,
+		(select count(*) from tthings where  year(date_format(publish_date,'%Y-%m-%d'))=#{value7} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=7  ) seven,
+		(select count(*) from tthings where  year(date_format(publish_date,'%Y-%m-%d'))=#{value8} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=8  ) eight,
+		(select count(*) from tthings where  year(date_format(publish_date,'%Y-%m-%d'))=#{value9} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=9  ) nine,
+		(select count(*) from tthings where  year(date_format(publish_date,'%Y-%m-%d'))=#{value10} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=10  ) ten,
+		(select count(*) from tthings where  year(date_format(publish_date,'%Y-%m-%d'))=#{value11} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=11  ) eleven,
+		(select count(*) from tthings where  year(date_format(publish_date,'%Y-%m-%d'))=#{value12} and (finished_date>DATE_ADD(publish_date,INTERVAL 31 DAY) or finished=0) and month(date_format(publish_date,'%Y-%m-%d'))=12 ) twelve
+		from tthings	
+	</select>
+	
+	<!-- 指定年份的每个月份售卖商品发布数量统计 -->
+	<select id="selectThingsCountByMonth" resultType="java.util.Map">
+		select DISTINCT (select count(*) from tthings where month(date_format(publish_date,'%Y-%m-%d'))=1 and year(date_format(publish_date,'%Y-%m-%d'))=#{value1} ) one,
+		(select count(*) from tthings where month(date_format(publish_date,'%Y-%m-%d'))=2 and year(date_format(publish_date,'%Y-%m-%d'))=#{value2} ) two,
+		(select count(*) from tthings where month(date_format(publish_date,'%Y-%m-%d'))=3 and year(date_format(publish_date,'%Y-%m-%d'))=#{value3} ) three,
+		(select count(*) from tthings where month(date_format(publish_date,'%Y-%m-%d'))=4 and year(date_format(publish_date,'%Y-%m-%d'))=#{value4} ) four,
+		(select count(*) from tthings where month(date_format(publish_date,'%Y-%m-%d'))=5 and year(date_format(publish_date,'%Y-%m-%d'))=#{value5} ) five,
+		(select count(*) from tthings where month(date_format(publish_date,'%Y-%m-%d'))=6 and year(date_format(publish_date,'%Y-%m-%d'))=#{value6} ) six,
+		(select count(*) from tthings where month(date_format(publish_date,'%Y-%m-%d'))=7 and year(date_format(publish_date,'%Y-%m-%d'))=#{value7} ) seven,
+		(select count(*) from tthings where month(date_format(publish_date,'%Y-%m-%d'))=8 and year(date_format(publish_date,'%Y-%m-%d'))=#{value8} ) eight,
+		(select count(*) from tthings where month(date_format(publish_date,'%Y-%m-%d'))=9 and year(date_format(publish_date,'%Y-%m-%d'))=#{value9} ) nine,
+		(select count(*) from tthings where month(date_format(publish_date,'%Y-%m-%d'))=10 and year(date_format(publish_date,'%Y-%m-%d'))=#{value10} ) ten,
+		(select count(*) from tthings where month(date_format(publish_date,'%Y-%m-%d'))=11 and year(date_format(publish_date,'%Y-%m-%d'))=#{value11} ) eleven,
+		(select count(*) from tthings where month(date_format(publish_date,'%Y-%m-%d'))=12 and year(date_format(publish_date,'%Y-%m-%d'))=#{value12} ) twelve
+		from tthings
+	</select>
+	
+	<!-- 指定年份的每个月份需求商品发布数量统计 -->
+	<select id="selectRequestCountByMonth" resultType="java.util.Map">
+		select 
+		DISTINCT (select count(*) from trequests where month(date_format(publish_date,'%Y-%m-%d'))=1 and year(date_format(publish_date,'%Y-%m-%d'))=#{value1} ) one,
+		(select count(*) from trequests where month(date_format(publish_date,'%Y-%m-%d'))=2 and year(date_format(publish_date,'%Y-%m-%d'))=#{value2} ) two,
+		(select count(*) from trequests where month(date_format(publish_date,'%Y-%m-%d'))=3 and year(date_format(publish_date,'%Y-%m-%d'))=#{value3} ) three,
+		(select count(*) from trequests where month(date_format(publish_date,'%Y-%m-%d'))=4 and year(date_format(publish_date,'%Y-%m-%d'))=#{value4} ) four,
+		(select count(*) from trequests where month(date_format(publish_date,'%Y-%m-%d'))=5 and year(date_format(publish_date,'%Y-%m-%d'))=#{value5} ) five,
+		(select count(*) from trequests where month(date_format(publish_date,'%Y-%m-%d'))=6 and year(date_format(publish_date,'%Y-%m-%d'))=#{value6} ) six,
+		(select count(*) from trequests where month(date_format(publish_date,'%Y-%m-%d'))=7 and year(date_format(publish_date,'%Y-%m-%d'))=#{value7} ) seven,
+		(select count(*) from trequests where month(date_format(publish_date,'%Y-%m-%d'))=8 and year(date_format(publish_date,'%Y-%m-%d'))=#{value8} ) eight,
+		(select count(*) from trequests where month(date_format(publish_date,'%Y-%m-%d'))=9 and year(date_format(publish_date,'%Y-%m-%d'))=#{value9} ) nine,
+		(select count(*) from trequests where month(date_format(publish_date,'%Y-%m-%d'))=10 and year(date_format(publish_date,'%Y-%m-%d'))=#{value10} ) ten,
+		(select count(*) from trequests where month(date_format(publish_date,'%Y-%m-%d'))=11 and year(date_format(publish_date,'%Y-%m-%d'))=#{value11} ) eleven,
+		(select count(*) from trequests where month(date_format(publish_date,'%Y-%m-%d'))=12 and year(date_format(publish_date,'%Y-%m-%d'))=#{value12} ) twelve
+		from trequests
+	</select>
+	
+	<!-- 查看我的交易记录 -->
+	<select id="selectMyTrade" resultType="java.util.Map">
+		select t._id sellThing_id,r._id requestThing_id,t.picture1 thing_picture,r.thing_name requestThing_name,t.thing_name sellThing_name,r.finished_date requestTrade_date,t.finished_date thingTrade_date,j.judge,t.isComplaint from ttrade trade 
+		left join tthings t on trade._thing=t._id 
+		left join trequests r on r._id=trade._thing
+		left join tthingscomplainjudge j on j._complain=trade._thing
+		where trade.seller_id=${seller_id} or trade.buyer_id=${buyer_id}
+	</select>
+	
+	
+	<!-- 查看我的售卖商品售卖记录 -->
+	<select id="selectSellInfos" resultType="java.util.Map">
+		select _id,thing_name,finished_date,picture1,isComplaint,isResist,isJudged from tthings 
+		where _owner=${_owner} and finished!=0
+	</select>
+	
+	<!-- 查看我的需求商品售卖记录 -->
+	<select id="selectRequest_sellInfo" resultType="java.util.Map">
+		select _id request_id,thing_name,finished_date,isComplaint,isResist,isJudged from trequests 
+		where  finished!=0 and request_provider=${request_provider} 
+	</select>
+	
+	<!-- 查看我的售卖商品购买记录 -->
+	<select id="selectSell_buyInfos" resultType="java.util.Map">
+		select _id,thing_name,finished_date,picture1,isComplaint,isResist,isJudged from tthings 
+		where _buyer=${_buyer} and finished!=0
+	</select>
+
+	<!-- 查看我的需求商品购买记录 -->
+	<select id="selectRequest_buyInfos" resultType="java.util.Map">
+		select _id request_id,thing_name,finished_date,isComplaint,isResist,isJudged from trequests 
+		where _owner=${_owner} and finished!=0
+	</select>
+</mapper>

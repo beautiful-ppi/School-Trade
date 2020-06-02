@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinyuan.mapper.TSystemMessageMapper">
+	<!-- 用户查看自己的系统消息 -->
+	<select id="selectSystemMessageBy_id" resultType="com.jinyuan.domain.TSystemMessage">
+		select * from TSystemMessage where _user=${_user}
+	</select>
+	
+	<!-- 查看系统消息详情 -->
+	<select id="selectDetailSystemMessage" resultType="com.jinyuan.domain.TSystemMessage">
+		select * from TSystemMessage where _id=${_id}
+	</select>
+	
+	<!-- 设置为已读状态 -->
+	<update id="updateMessageIsRead">
+		update TSystemMessage set isRead=1 where _id=${_id}
+	</update>
+	
+	<!-- 管理员发送系统消息 -->
+	<insert id="insertSystemMessage" parameterType="com.jinyuan.domain.TSystemMessage">
+		insert into TSystemMessage values(${_id},${_user},'${title}','${message}','${message_date}',${isRead})
+	</insert>
+</mapper>
