@@ -1,0 +1,138 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>管理用户管理</title>
+		<link rel="stylesheet" type="text/css" href="../css/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="../css/icon.css">
+
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="../js/module/manage.js"></script>
+		<style type="text/css">
+			.easyui-validatebox {
+				display: inline-block;
+				 padding: 5px 0 5px 5px; 
+				font-family: "Open Sans", sans;
+				font-weight: 400;
+				color: #000000;
+				background: #CCCCCC;
+				border: 0;
+				border-radius: 5px;
+				font-size: 16px;
+			}
+
+			.easyui-validatebox:focus,
+			.easyui-validatebox:active {
+				color: #000000;
+				text-indent: 0;
+				font-size: 16px;
+				background: #CCCCCC;
+				border-radius: 5px;
+			}
+
+			.lb {
+				display: inline-block;
+				padding: 5px 5px;
+				text-shadow: 0 1px 0 rgba(19, 74, 70, .4);
+				background: #E0ECFF;
+				transition: all .3s ease-in-out;
+				border-radius: 10px;
+				margin-top: 5px;
+			}
+			.btn{
+				margin-top: 10px;
+				background: #AAC5E7;
+				border-radius: 5px;
+				cursor: pointer;
+				outline: none;
+				border: 0;
+				font-family: "Microsoft YaHei";
+				font-size: 16px;
+			}
+			#dt_level{
+				border: none;
+				border-radius: 5px;
+				height: 30px;
+				font-size: 16px;
+				color: #0E2D5F;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="margin-top: 35px;"></div>
+		<table id="dg" title="管理用户管理" style="width:auto;height:91%"></table>
+		<div id="dl_manage_detail" class="easyui-dialog" title="管理员详细信息" style="width:300px;height: 400px;padding: 20px;" closed="true">
+			<form id="detail">
+				<div>
+					<label class="lb">账号:</label>
+					<input id="dt_account" class="easyui-validatebox" type="text" readonly="true" />
+				</div>
+				<div class="dv">
+					<label class="lb">密码:</label>
+					<input id="dt_password" class="easyui-validatebox" type="text"/>
+				</div>
+				<div class="dv">
+					<label class="lb">名字:</label>
+					<input id="dt_name" class="easyui-validatebox" type="text" />
+				</div>
+				<div class="dv">
+					<label class="lb">微信:</label>
+					<input id="dt_weixin" class="easyui-validatebox" type="text" />
+				</div>
+				<div class="dv">
+					<label class="lb">电话:</label>
+					<input id="dt_mobile" class="easyui-validatebox" type="text" />
+				</div>
+				<div class="dv">
+					<label class="lb">级别:</label>
+					<input id="dt_level" type="button" />
+				</div>
+				<div class="dv"> 
+					<label class="lb">头像:</label>
+					<img id="img" style="width: 48px;" />
+					<input id="dt_photo" name="photo" type="file" style="height: 48px; width: 48px;position: absolute;left: 68px; top: 263px;FILTER: alpha(opacity:0);-moz-opacity:0.5;opacity: 0;"/>
+				</div>
+				<div class="dv">
+					<input id="modify" class="btn" type="button" value="修改提交" onclick="d_modify()" style="margin-left: 15px;"/>
+					<input id="delete" class="btn" type="button" value="删除用户" onclick="d_delete()" style="margin-left: 60px;" />
+				</div>
+			</form>
+		</div>
+		<div id="dl_manage_add" class="easyui-dialog" title=" " style="width:300px;height: 380px;padding: 10px;" closed="true">
+			<center><h3>新建管理员</h3></center>
+			<form id="add_new">
+				<div>
+					<label class="lb">账号:</label>
+					<input id="account" class="easyui-validatebox" placeholder="请输入账号" name="account" type="text" data-options="required:true"/>
+				</div>
+				<div>
+					<label class="lb">密码:</label>
+					<input id="password" class="easyui-validatebox" placeholder="请输入密码" name="password" type="text" data-options="required:true"/>
+				</div>
+				<div>
+					<label class="lb">姓名:</label>
+					<input id="name" class="easyui-validatebox" placeholder="请输入姓名" name="name" type="text" data-options="required:true"/>
+				</div>
+				<div>
+					<label class="lb">电话:</label>
+					<input id="mobile" class="easyui-validatebox" placeholder="请输入电话" name="mobile" type="text" data-options="required:true"/>
+				</div>
+				<div>
+					<label class="lb">微信:</label>
+					<input id="weixin" class="easyui-validatebox" placeholder="请输入微信" name="weixin" type="text" data-options="required:true"/>
+				</div>
+				<div>
+					<label class="lb" style="float: left;">头像:</label>
+					<img id="imgshow" src="../img/nl.jpg" style="width: 48px;"/>
+					<input id="photo" name="photo" type="file" style="height: 48px; width: 48px;position: absolute;left: 68px; top: 280px;FILTER: alpha(opacity:0);-moz-opacity:0.5;opacity: 0;"/>
+				</div>
+				<div>
+					<input class="btn" type="button" value="提交" onclick="new_manage()" style="margin-left: 20px;"/>
+					<input class="btn" type="reset" value="清空" style="margin-left: 100px;"/>
+				</div>
+			</form>
+		</div>
+
+
+	</body>
+</html>

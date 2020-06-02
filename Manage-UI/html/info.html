@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="../css/default/easyui.css">
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+		<meta charset="utf-8">
+		<link rel="icon" href="https://jscdn.com.cn/highcharts/images/favicon.ico">
+
+		<script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
+		<script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+		<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script> 
+		<script src="https://code.highcharts.com.cn/highcharts/highcharts-3d.js"></script>
+		<script src="https://code.highcharts.com.cn/highcharts/modules/oldie.js"></script>
+		<script src="https://code.highcharts.com.cn/highcharts/modules/cylinder.js"></script> 
+		<script type="text/javascript" src="../js/module/info.js"></script>
+		<style type="text/css">
+			.main {
+				margin-top: 10;
+				margin-left: 50;
+				width: 98%;
+				height: 98%;
+				position: absolute;
+			}
+
+			.quarter-div {
+				width: 49%;
+				height: 49%;
+				float: left;
+			}
+
+			.blue {
+				background-color: #5BC0DE;
+			}
+
+			.green {
+				background-color: #5CB85C;
+			}
+
+			.orange {
+				background-color: #F0AD4E;
+			}
+
+			.yellow {
+				background-color: #FFC706;
+			}
+			
+
+		</style>
+	</head>
+	<body>
+		
+		<div class="main">
+			<div id="sn_container" class="quarter-div blue"></div>
+			<div id="td_container" class="quarter-div green"></div>
+			<div id="ur_container" class="quarter-div orange"></div>
+			<div id="mo_container" class="quarter-div yellow"></div>
+		</div>
+		
+		<script src="https://code.highcharts.com.cn/highcharts/modules/funnel3d.js"></script>
+		<script src="https://code.highcharts.com.cn/highstock/modules/pyramid3d.js"></script> 
+	</body>
+</html>

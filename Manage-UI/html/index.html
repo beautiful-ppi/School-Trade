@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>校园二手交易管理页面</title>
+		
+		<link rel="stylesheet" type="text/css" href="../css/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="../css/icon.css">
+		 
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="../js/module/index.js"></script> 
+	</head>
+	<body class="easyui-layout">
+		<!-- background:#B3DFDA; -->
+		<div data-options="region:'north',border:false" style="height:85px;padding:10px;background:url(../img/north.jpg) no-repeat;background-size: 100%;" >
+			<center><h2>校园二手交易管理页面</h2></center>
+		</div>
+		<div data-options="region:'west',split:true,title:'功能模块'" style="width:210px;background:url(../img/west11.jpg) no-repeat;background-size: 100% 100%;">
+			<div id="LeftMenu" style="opacity: 0.8;"></div>
+		
+		</div>
+		
+		<div data-options="region:'east',split:true,title:'这是系统实时信息显示'" style="width:210px;background:url(../img/east.jpg) no-repeat;background-size: 100% 100%;">
+			
+			欢迎管理员---<label id="who" style="font-size: 26px;color: #FF2A7B;"></label>&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" value="注销" style="border: none;border-radius: 5px;" onclick="loginOut()" />
+		</div>
+		
+		<div data-options="region:'south',border:false" style="height:50px;background:url(../img/south11.jpg) no-repeat;background-size: 100%;padding-bottom: 5px;"></div>
+		<div data-options="region:'center',border:false">
+			<div id="tabs" class="easyui-tabs" fit="true" style="width:auto,height:auto;background:url(../img/center.jpg) no-repeat;background-size: 100%;">
+				<!-- <div title="首页" style="padding:10px;"><img src="../img/welcome.jpg" style="width:auto,height:auto"></img></div> -->
+				<div title="首页" ><iframe src="ice.html" style="width: 99%;height: 97%;border: none;margin: 5px;"></iframe></div>
+			</div>
+		</div>
+		
+		<div id="tab_menu" class="easyui-menu" style="width:150px;">
+		        <div id="tab_menu_tabrefresh" data-options="iconCls:'icon-reload'">刷新</div>
+		        <div id="tab_menu_tabopenFrame">在新的窗体打开</div>
+		        <div id="tab_menu_tabcloaseall">关闭所有</div>
+		        <div id="tab_menu_tabcloseother">关闭其他标签页</div>
+		        <div class="menu-sep"></div>
+		        <div id="tab_menu_tabcloseright">关闭右边</div>
+		        <div id="tab_menu_tabclose" data-options="iconCls:'icon-cancel'">关闭</div>
+		   </div>
+	</body>
+</html>

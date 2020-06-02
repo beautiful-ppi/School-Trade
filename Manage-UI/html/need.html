@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<META HTTP-EQUIV="pragma" CONTENT="no-cache">
+		<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+		<META HTTP-EQUIV="expires" CONTENT="0">
+		<title>售卖及需求匹配</title>
+		<link rel="stylesheet" type="text/css" href="../css/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="../css/icon.css">
+		
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="../js/module/need.js"></script>
+		<style type="text/css">
+			.lb{
+				background: #FFE48D;
+				font-size: 14px;
+				border-radius: 5px;
+				
+				
+			}
+			.dl_btn{
+				margin-top: 20px;
+				background: #E0ECFF;
+				border-radius: 5px;
+				border: none;
+				font-size: 16px;
+				
+				
+			}
+		</style>
+	</head>
+	<body>
+		<div style="margin-top: 35px;"></div>
+		<table id="dg" title="售卖及需求匹配" style="width:auto;height:91%;"></table>
+		<div id="dl_need_show" class="easyui-dialog" title="发送匹配结果" style="width:300px;height: 400px;padding: 20px;" closed="true">
+			<form id="ff_result">
+				<div>
+					<label class="lb">结果标题:</label>
+					<input id="tl" class="easyui-textbox" name="title" type="text" />
+				</div>
+				<div style="margin-top: 10px;">
+					<label class="lb">具体内容:</label>
+					<input id="mg" name="message" class="easyui-textbox" type="text" style="height: 200px;" data-options="multiline:true"/>
+				</div>
+				<input class="dl_btn" type="button" value="发送" onclick="send_user_inform()" style="margin-left: 20px;" />
+				<input class="dl_btn" type="reset" value="清空" style="margin-left: 100px;"/>
+			</form>
+		</div>
+
+		<div id="dl_need_detail" class="easyui-dialog" title="售卖及需求匹配详细信息" style="width: 360px;height: 400px;padding: 20px;" closed="true">
+			<form id="show_info"></form>
+		</div>
+	</body>
+</html>

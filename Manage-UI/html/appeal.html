@@ -1,0 +1,151 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>投诉及申诉管理</title>
+		<link rel="stylesheet" type="text/css" href="../css/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="../css/icon.css">
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="../js/module/appeal.js"></script>
+		<style type="text/css">
+			.de_btn,.judge_btn {
+				
+				display: block;
+				background: #34696f;
+				border: 2px solid #B7D2FF;
+				color: #000000;
+				text-align: center;
+				background: -moz-linear-gradient(0% 100% 90deg, #B7D2FF, #52a8e8);
+				background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#52a8e8), to(#B7D2FF));
+
+				-webkit-border-radius: 50px;
+				-khtml-border-radius: 50px;
+				-moz-border-radius: 50px;
+				border-radius: 50px;
+
+				-webkit-box-shadow: 0 5px 0 #B7D2FF;
+				-moz-box-shadow: 0 5px 0 #B7D2FF;
+				box-shadow: 0 5px 0 #B7D2FF;
+			}
+		</style>
+	</head>
+	<body>
+
+		<div style="margin-left:200px;">
+			<form id="ff">
+				<input class="easyui-radiobutton" type="radio" name="yn" value="0" label="未调解" labelPosition="after">
+				<input class="easyui-radiobutton" type="radio" name="yn" value="1" label="已调解" labelPosition="after">
+				<input class="easyui-radiobutton" type="radiobutton" name="yn" value="2" label="所有" labelPosition="after" checked="true">
+			</form>
+		</div>
+
+		<table id="dg" title="投诉及申诉管理" style="width:auto;height:88%"></table>
+
+		<!-- 申诉详细信息 -->
+		<div id="dl_apeal_detail" class="easyui-dialog" title="投诉/申诉详细信息" style="width: 600px;height: 400px;padding: 20px;" closed="true" >
+			<form id="check">
+				<div style="float: left;">
+					<label>卖家账号:</label>
+					<input id="sell_seller_account" class="easyui-textbox" readonly="true" type="text" />
+				</div>
+				<div>
+					<label style="margin-left: 20px;">卖家姓名:</label>
+					<input id="sell_seller_name" class="easyui-textbox" readonly="true" type="text" />
+				</div>
+				<div style="float: left;">
+					<label>买家账号:</label>
+					<input id="sell_buyer_account" class="easyui-textbox" readonly="true" type="text" />
+				</div>
+				<div>
+					<label style="margin-left: 20px;">买家姓名:</label>
+					<input id="sell_buyer_name" class="easyui-textbox" readonly="true" type="text" />
+				</div>
+				<div style="margin-top: 10px;">
+					<label>商品介绍:</label>
+					<input id="sell_memo" class="easyui-textbox" readonly="true" type="text" style="width: 405px; height: 100px;margin-top: 10px;"
+					 data-options="multiline:true" />
+				</div>
+				<div style="margin-top: 10px;float: left;">
+					<label>交易日期:</label>
+					<input id="sell_trade_date" class="easyui-textbox" readonly="true" type="text" />
+				</div>
+				<div style="margin-top: 10px;">
+					<label style="margin-left: 20px;">投诉日期:</label>
+					<input id="complain_date" class="easyui-textbox" readonly="true" type="text" />
+				</div>
+				<div style="margin-top: 10px;float: left;">
+					<label>投诉内容:</label>
+					<input id="complain_memo" class="easyui-textbox" readonly="true" type="text" style="width:160px;height: 50px;"
+					 data-options="multiline:true" />
+				</div>
+				<div style="margin-top: 10px;">
+					<label style="margin-left: 20px;">申诉内容:</label>
+					<input id="resist" class="easyui-textbox" readonly="true" type="text" style="width:160px;height: 50px;" data-options="multiline:true" />
+				</div>
+				<div style="margin-top: 20px;margin-left: 25px;">
+					<input id="ok_appeal" class="de_btn" name="state" type="button" value="设置已调解" onclick="isOK()" style="float: left;">
+					<input class="de_btn" name="state" type="button" value="查看卖家信息" onclick="show_s()" style="float: left; margin-left: 10px;">
+					<input class="de_btn" name="state" type="button" value="查看买家信息" onclick="show_b()" style="float: left;margin-left: 10px;">
+					<input id="judge" class="de_btn" name="state" type="button" value="发送仲裁结果" onclick="show_r()" style="float: left;margin-left: 10px;">
+				</div>
+
+			</form>
+		</div>
+
+		<!-- 注册用户详细信息 -->
+		<div id="appeal_user_info" title="用户详细信息" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true">
+			<div class="ftitle">
+				<center><h3>用户信息</h3></center>
+			</div>
+			<div class="fitem" style="float: left;margin-left: 29px;">
+				<label>账号:</label>
+				<input id="account" class="easyui-textbox" type="text" name="account" readonly="true">
+			</div>
+			<div class="fitem" style="margin-left: 260px;">
+				<label>密码:</label>
+				<input id="password" class="easyui-textbox" type="text" name="password" readonly="true">
+			</div>
+			<div class="fitem" style="float: left;">
+				<label>真实名字:</label>
+				<input id="name" class="easyui-textbox" type="text" name="realname" readonly="true">
+			</div>
+			<div class="fitem" style="margin-left: 231px;">
+				<label>联系电话:</label>
+				<input id="mobile" class="easyui-textbox" type="text" name="phone" readonly="true">
+			</div>
+			<div class="fitem" style="float: left;margin-left: 14px;">
+				<label>微信号:</label>
+				<input id="weixin" class="easyui-textbox" type="text" name="weixin" readonly="true">
+			</div>
+			<div class="fitem" style="margin-left: 230px;">
+				<label>所属院系:</label>
+				<input id="department" class="easyui-textbox" type="text" name="department" readonly="true">
+			</div>
+			<div class="fitem" style="margin-left: 26px;">
+				<label>班级:</label>
+				<input id="_class" class="easyui-textbox" type="text" name="_class" readonly="true">
+			</div>
+			<div class="fitem" style="margin-left: 26px;">
+				<label>头像:</label>
+				<img id="photo" style="width: 48px;" />
+			</div>
+			<div class="fitem" style="margin-left: 26px;">
+				<label>状态:</label>
+				<input id="state" type="button" readonly="true" style="border: none;"/>
+			</div>
+		</div>
+
+		<div id="sead_judge" title="发送仲裁结果" class="easyui-dialog" style="width:210px;height:230px;padding:10px 20px" closed="true">
+			<div>
+				<label>仲裁结果:</label>
+				<input id="judgeResult" class="easyui-textbox" type="text" style="height: 100px;" />
+			</div>
+			<div style="margin-top: 20px;">
+				<input class="judge_btn" type="button" onclick="send_judge()" value="发送" style="float: left;"/>
+				<input class="judge_btn" type="reset" value="清空" style="margin-left: 110px;"/>
+			</div>
+
+		</div>
+
+	</body>
+</html>

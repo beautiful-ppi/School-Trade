@@ -1,0 +1,112 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>注册用户管理</title>
+		<link rel="stylesheet" type="text/css" href="../css/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="../css/icon.css">
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="../js/module/user.js"></script>
+		<link rel="stylesheet" type="text/css" href="../css/user.css" />
+	</head>
+	<body>
+		<div id="search" style="padding:10px;">
+			<label class="lbl">请输入真实姓名或者账号:</label>
+			<input class="easyui-searchbox" data-options="prompt:'Please Input Value',searcher:search_user" style="width:300px"></input>
+			<!-- <input  id="search_u" class="easyui-textbox" type="text" style="width:300px;">
+			<button id="srh_btn" onclick="search_user()" >搜索</button> -->
+		</div>
+		<!-- 表格生成 -->
+		<table id="dg" title="注册用户管理" style="width: auto;height: 85%;" data-options="
+				rownumbers:true,
+				singleSelect:true,
+				autoRowHeight:false,
+				pagination:true,
+				fitColumns:true,
+				">
+			<thead>
+
+				<tr>
+					<th field="account" width="100">账号</th>
+					<th field="name" width="100">真实姓名</th>
+					<th field="mobile" width="100">联系电话</th>
+					<th field="weixin" width="100">微信</th>
+					<th field="department" width="100"> 所属院系</th>
+					<th field="_class" width="100"> 班级</th>
+					<th field="state" width="100">状态</th>
+					<th field="grade" width="100">用户等级</th>
+					<th field="register_date" width="100">注册时间</th>
+
+				</tr>
+
+			</thead>
+		</table>
+
+		<!-- 注册用户详细信息 -->
+		<div id="user_info" title="注册用户详细信息" class="easyui-dialog" style="width:550px;height:400px;padding:10px 20px" closed="true">
+			<div class="ftitle">
+				<center>
+					<h3>用户信息</h3>
+				</center>
+			</div>
+			<div class="fitem" style="float: left;margin-left: 27px;">
+				<label>账号:</label>
+				<input id="account" class="easyui-textbox"  type="text" name="account" readonly="true">
+			</div>
+			<div class="fitem" style="margin-left: 280px;">
+				<label>密码:</label>
+				<input id="password" class="easyui-textbox" type="text" name="password" readonly="true">
+			</div>
+			<div class="fitem" style="float: left;margin-top: 10px;">
+				<label>真实名字:</label>
+				<input id="name" class="easyui-textbox" type="text" name="realname" readonly="true">
+			</div>
+			<div class="fitem" style="margin-top: 10px;margin-left: 253px;">
+				<label>联系电话:</label>
+				<input id="mobile" class="easyui-textbox" type="text" name="phone" readonly="true">
+			</div>
+			<div class="fitem" style="margin-left: 14px;float: left;margin-top: 10px;">
+				<label>微信号:</label>
+				<input id="weixin" class="easyui-textbox" type="text" name="weixin" readonly="true">
+			</div>
+			<div class="fitem" style="margin-top: 10px; margin-left: 253px;">
+				<label>所属院系:</label>
+				<input id="department" class="easyui-textbox" type="text" name="department" readonly="true">
+			</div>
+			<div class="fitem" style="margin-left: 28px; margin-top: 10px;">
+				<label>班级:</label>
+				<input id="_class" class="easyui-textbox" type="text" name="_class" readonly="true">
+			</div>
+			<div class="fitem" style="margin-left: 30px;margin-top: 10px;float: left;">
+				<label style="">头像:</label>
+				<img id="photo" style="width: 48px;" />
+			</div>
+			<div class="fitem" style="margin-left: 280px;margin-top: 30px;">
+				<label>状态:</label>
+				<input id="state" type="button" readonly="true" style="border: none;height: 25px;width: 50px;"/>
+			</div>
+			<div style="margin-left: 50px;margin-top: 30px;">
+				<input id="un" type="button" onclick="un_user()" style="float: left;"/>
+				<input id="reset_pass" type="button" value="重置密码" onclick="reset_password()" style="float: left; margin-left: 65px;" />
+				<input id="btn_noti" type="button" value="发送通知" onclick="show_sys()" style="margin-left: 290px;" />
+			</div>
+		</div>
+
+		<!-- 发送系统通知 -->
+		<div id="system_noti" title="发送系统通知" class="easyui-dialog" style="width:210px;height:350px;padding:10px 20px" closed="true">
+			<div>
+				<label>标题:</label>
+				<input id="sn_title" class="easyui-textbox" type="text" />
+			</div>
+			<div>
+				<label>正文:</label>
+				<input id="sn_message" class="easyui-textbox" type="text" style="height: 150px;" />
+			</div>
+			<div style="margin-top: 20px;">
+				<input id="send_noti" type="button" value="发送" onclick="send_sys_noti()" style="float: left;" />
+				<input id="res" type="reset" value="清空" style="margin-left: 110px;"/>
+			</div>
+		</div>
+
+	</body>
+</html>
