@@ -8,7 +8,6 @@ import org.springframework.cache.annotation.EnableCaching;
 
 
 @MapperScan("com.jinyuan.project.mapper")//扫描所有mapper包
-@EnableCaching
 @SpringBootApplication
 public class SchoolTradeApplication {
 
