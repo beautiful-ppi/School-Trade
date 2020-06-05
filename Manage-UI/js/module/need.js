@@ -5,6 +5,12 @@ var _thing_id;
 var _matchCount;
 
 $(function() {
+	//设置请求头token
+	$.ajaxSetup({
+			headers: {
+			         "token":window.sessionStorage.getItem("token")
+			}
+		});
 	$('#dg').datagrid({
 		url: 'http://localhost:8000/selectAllRequestMatchInfo',
 		rownumbers: true,

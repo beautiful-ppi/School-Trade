@@ -1,14 +1,17 @@
-
+//获取token
+var token=window.sessionStorage.getItem("token");
 
 $(function () {
+	
+	
 	
 	//console.log(document.cookie)
 	var manData;
 	var name=getCookie();
 	document.getElementById("who").innerHTML=name;
-	if(name==null){
-		window.location.href="login.html";
-	}
+	// if(name==null){
+	// 	window.location.href="login.html";
+	// }
 	
 	if(name=="admin"){
 		console.log(getCookie());
@@ -130,12 +133,25 @@ function onSideMenuSelect(item) {
 
 /* 注销 */
 function loginOut(){
-	if (getCookie()!=null) {
-		document.cookie = "name="+getCookie()+"; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+	$.ajax({
+		url: "http://localhost:8000/ManagerLogout",
+		headers:{token:window.sessionStorage.token},
+		success:function(data){
+			if(data.success==0){
+				alert(data.message);
+				document.cookie = "name="+getCookie()+"; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+			}
+			alert(data.message);
+		}
+		
+	});
+	/* if (getCookie()!=null) {
+		//document.cookie = "name="+getCookie()+"; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+		
 		window.location.href="login.html"
 	} else{
 		window.location.href="login.html"
-	}
+	} */
 	//alert(document.cookie)
 }
 /* 获取cookie的值 */

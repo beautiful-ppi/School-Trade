@@ -83,8 +83,14 @@ function pagerFilter(data) {
 }
 
 $(function() {
+	//设置请求头token
+	$.ajaxSetup({
+			headers: {
+			         "token":window.sessionStorage.getItem("token")
+			}
+		});
 	$('#dg').datagrid({
-		url: 'http://localhost:8000/selectAdminByPage',
+		url: 'http://localhost:8000/selectAdminByPage?pageNo=1&pageSize=20',
 		rownumbers: true,
 		// headers:{token:window.sessionStorage.token},
 		singleSelect: true,
@@ -187,7 +193,7 @@ function show_user_info() {
 			$("#dt_mobile").val(data.data.mobile);
 			$("#dt_weixin").val(data.data.weixin);
 
-			$("#img").attr('src', 'http://localhost:8000/images/' + data.data.photo);
+			$("#img").attr('src', 'http://localhost:8000/managerIcon/' + data.data.photo);
 			if (data.data.level == 1) {
 				$("#dt_level").val("超级管理员");
 			} else {

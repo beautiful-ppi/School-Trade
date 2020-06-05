@@ -6,6 +6,12 @@ var url="http://localhost:8000/selectAllComplainAndResist";
 var _thing_id;
 
 $(function(){
+	//设置请求头token
+	$.ajaxSetup({
+			headers: {
+			         "token":window.sessionStorage.getItem("token")
+			}
+		});
 	$('#dg').datagrid({
 		url: url,
 		rownumbers: true,

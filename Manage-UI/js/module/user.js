@@ -121,7 +121,12 @@ function show_user_info() {
 }
 
 $(function() {
-
+	//设置请求头token
+	$.ajaxSetup({
+			headers: {
+			         "token":window.sessionStorage.getItem("token")
+			}
+		});
 	$('#dg').datagrid({
 		url: ' http://localhost:8000/selectUserByPage',
 		method: 'get',

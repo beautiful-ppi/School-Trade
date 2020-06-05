@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinyuan.project.mapper.TRequestMatchMapper">
+	
+	<!-- 显示所有的需求匹配结果 -->
+	<select id="selectAllRequestMatchInfos"  resultType="java.util.Map">
+		select DISTINCT r._id request_id,u.account,u.name,r.thing_name,r.publish_date ,(select count(*) from tthings where finished=0 and thing_name like CONCAT('%',r.thing_name,'%')and (r.price_low&lt;=price and price&lt;=r.price_high) and (new_old-0.2&lt;=r.new_old and r.new_old&lt;=new_old+0.2) ) matchCount  from trequests r 
+		left join tthings t
+		on (t.thing_name like CONCAT('%',r.thing_name,'%')) and  (r.price_low&lt;=t.price and t.price&lt;=r.price_high) and (t.new_old-0.2&lt;=r.new_old and r.new_old&lt;=t.new_old+0.2) 
+		left join tuser u on u._id=r._owner
+		where t.finished=0
+	</select>
+	
+	<!-- 用户查看自己的需求匹配信息 -->
+	<select id="selectMyRequests" resultType="com.jinyuan.project.domain.TRequestMatch">
+		select * from TRequestMatch where _user=${_user}
+	</select>
+	
+	<!-- 查看需求匹配信息详情 -->
+	<select id="selectDetailRequestMatch" resultType="com.jinyuan.project.domain.TRequestMatch">
+		select * from TRequestMatch where _id=${_id}
+	</select>
+	
+	
+	<!-- 设置已读状态 -->
+	<update id="updateRequestIsRead">
+		update TRequestMatch set isRead=1 where _id=${_id}
+	</update> 
+	
+	<!-- 需求匹配结果显示 -->
+	<select id="selectAllRequestMatchInfo" resultType="java.util.Map">
+ 		select DISTINCT r._id request_id,u.account,u.name,r.thing_name,r.publish_date ,(select count(*) from tthings where finished=0 and thing_name like CONCAT('%',r.thing_name,'%')and (r.price_low&lt;=price and price&lt;=r.price_high) and (new_old-0.2&lt;=r.new_old and r.new_old&lt;=new_old+0.2) ) matchCount  from trequests r 
+		left join tthings t
+		on (t.thing_name like CONCAT('%',r.thing_name,'%')) and  (r.price_low&lt;=t.price and t.price&lt;=r.price_high) and (t.new_old-0.2&lt;=r.new_old and r.new_old&lt;=t.new_old+0.2) 
+		left join tuser u on u._id=r._owner
+ 		where t.finished=0 limit #{startRow},#{pageSize}
+	</select> 
+	
+	<!-- 需求匹配结果总数 -->
+	<select id="selectTotalRequestMatchInfo" resultType="java.lang.Integer">
+		select count(DISTINCT r._id) totalCounts from trequests r 
+		left join tthings t
+		on (t.thing_name like CONCAT('%',r.thing_name,'%')) and  (r.price_low&lt;=t.price and t.price&lt;=r.price_high) and (t.new_old-0.2&lt;=r.new_old and r.new_old&lt;=t.new_old+0.2) 
+		left join tuser u on u._id=r._owner
+ 		where t.finished=0
+	</select>
+	
+	<!-- 根据request_id查看需求匹配结果详情-->
+	<select id="selectDetailRequestMatchBy_id" resultType="java.util.Map">
+		select r._owner request_owner,t._id thing_id,t._owner seller_owner,
+		(select account from tuser where _id=t._owner) seller_account,
+		(select name from tuser where _id=t._owner) seller_name,t.new_old,t.publish_date,t.memo from trequests r 
+		left join tthings t
+		on (t.thing_name like CONCAT('%',r.thing_name,'%')) and (r.price_low&lt;=t.price and t.price&lt;=r.price_high) and (t.new_old-0.2&lt;=r.new_old and r.new_old&lt;=t.new_old+0.2)
+		left join tuser u on u._id=r._owner
+		where t.finished=0 and r._id=${_id}
+	</select>
+	
+	<!-- 发送需求匹配结果信息 -->
+	<insert id="sendToUser" parameterType="com.jinyuan.project.domain.TRequestMatch">
+		insert into TRequestMatch values(${_id},${_user},'${title}','${message}','${message_date}',
+		${_thing},${isRead})
+	</insert>
+</mapper>

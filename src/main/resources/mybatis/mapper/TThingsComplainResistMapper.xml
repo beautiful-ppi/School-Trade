@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinyuan.project.mapper.TThingsComplainResistMapper">
+	<!-- 申诉 -->
+	<insert id="insertComplainResist" parameterType="com.jinyuan.project.domain.TThingsComplainResist">
+		insert into TThingsComplainResist values(${_id},${_complain},'${resist}','${resist_date}')
+	</insert>
+	
+	<!-- 调整售卖商品为已申诉状态 -->
+	<update id="updateThingsIsResist">
+		update TThings set isResist=1 where _id=${_id}
+	</update>
+	
+	<!-- 调整需求商品为已申诉状态 -->
+	<update id="updateRequestIsResist">
+		update TRequests set isResist=1 where _id=${_id}
+	</update>
+</mapper>

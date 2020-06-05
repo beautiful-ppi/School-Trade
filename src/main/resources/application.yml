@@ -1,0 +1,70 @@
+server:
+  port: 8000
+
+school-trade:
+  version: 1.0.0
+
+spring:
+  profiles:
+    active:
+  # 服务模块
+  devtools:
+    restart:
+      # 热部署开关
+      enabled: true
+  #数据源配置
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/dbthings?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+      db-type: com.alibaba.druid.pool.DruidDataSource
+      password: 123456
+      username: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  #redis配置信息
+  redis:
+    host: 127.0.0.1
+    password:
+    port: 6379
+    timeout: 5s
+    jedis:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 20
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: 10000
+        # 连接池中的最大空闲连接
+        max-idle: 10
+        # 连接池中的最小空闲连接
+        min-idle: 0
+  main:
+    #banner
+    banner-mode: console
+  mvc:
+    #静态文件访问路径
+    static-path-pattern: /**
+    #静态资源存放位置
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/imagesUpload/,classpath:/images/
+  #rabbitmq配置
+#  rabbitmq:
+#    host: 192.168.1.103
+#    username: guest
+#    password: guest
+
+mybatis:
+  #  搜索包名
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+  type-aliases-package: com.jinyuan.project.domian
+#日志
+logging:
+  level:
+    com.jinyuan: debug
+    org.springframework: warn
+
+debug: false
+#rabbit健康管理
+management:
+  health:
+    rabbit:
+      enabled: true

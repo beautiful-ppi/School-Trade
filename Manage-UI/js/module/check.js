@@ -5,13 +5,19 @@ var url;
 
 /* 不诚信页面 */
 $(function() {
+	//设置请求头token
+	$.ajaxSetup({
+			headers: {
+			         "token":window.sessionStorage.getItem("token")
+			}
+		});
 	$('#dg').datagrid({
-		url: 'http://localhost:8000/selectUnhonestUser',
+		url: 'http://localhost:8000/selectUnhonestUser?pageNo=1&pageSize=20',
 		// onBeforeLoad: function(request){
 		// 	request.setRequestHeader("token",window.sessionStorage.token);
 		// 	console.log("window.sessionStorage.token");
 		// },
-		headers:{token:window.sessionStorage.token},
+		//headers:{token:window.sessionStorage.token},
 		rownumbers: true,
 		singleSelect: true,
 		pagination: true,

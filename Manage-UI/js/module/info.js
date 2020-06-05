@@ -4,6 +4,12 @@ var td_year = 2019;
 
 /* 注册用户信息统计 */
 $(function user_info() {
+	//设置请求头token
+	$.ajaxSetup({
+			headers: {
+			         "token":window.sessionStorage.getItem("token")
+			}
+		});
 
 	/* 注册用户信息统计 */
 	$.get("http://localhost:8000/selectUserCountsByMonth", {
