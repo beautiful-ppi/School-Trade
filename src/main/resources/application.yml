@@ -64,7 +64,7 @@ logging:
 
 debug: false
 #rabbit½¡¿µ¹ÜÀí
-management:
-  health:
-    rabbit:
-      enabled: true
+#management:
+#  health:
+#    rabbit:
+#      enabled: true

@@ -6,7 +6,6 @@ import com.jinyuan.project.domain.TUser;
 import com.jinyuan.framework.web.Result;
 import com.jinyuan.project.mapper.TThingsMapper;
 import com.jinyuan.project.service.TThingsService;
-import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
