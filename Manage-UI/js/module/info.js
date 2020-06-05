@@ -262,7 +262,7 @@ $(function td_info() {
 				td_year = record.value;
 				//user_series.data.length=0;
 				td_info();
-				console.log(td_year)
+				
 			}
 		}).combobox('setValue', td_year + '年数据');
 
@@ -272,44 +272,48 @@ $(function td_info() {
 /* 第四块 */
 
 $(function() {
-	Highcharts.chart('mo_container', {
-		chart: {
-			type: 'pyramid3d',
-			options3d: {
-				enabled: true,
-				alpha: 10,
-				depth: 50,
-				viewDistance: 50
-			}
-		},
-		title: {
-			text: '用户等级'
-		},
-		plotOptions: {
-			series: {
-				dataLabels: {
-					enabled: true,
-					format: '<b>{point.name}</b> ({point.y:,.0f})人',
-					color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-					allowOverlap: true,
-					x: 10,
-					y: -5
-				},
-				width: '60%',
-				height: '80%',
-				center: ['50%', '45%']
-			}
-		},
-		series: [{
-			name: '用户数量',
+	$.get("http://localhost:8000/selectAllUserGrade", function(data) {
+		var seriesGrade={
+			name: '用户等级数量',
 			data: [
-				['0级', 20],
-				['1级', 15],
-				['2级', 14],
-				['3级', 11],
-				['4级', 10]
+				['钻石', data.data.four],
+				['黄金', data.data.three],
+				['白眼', data.data.two],
+				['青铜', data.data.one]
 			]
-		}]
+		}
+		
+		Highcharts.chart('mo_container', {
+			chart: {
+				type: 'pyramid3d',
+				options3d: {
+					enabled: true,
+					alpha: 10,
+					depth: 50,
+					viewDistance: 50
+				}
+			},
+			title: {
+				text: '用户等级'
+			},
+			plotOptions: {
+				series: {
+					dataLabels: {
+						enabled: true,
+						format: '<b>{point.name}</b> ({point.y:,.0f})人',
+						color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+						allowOverlap: true,
+						x: 10,
+						y: -5
+					},
+					width: '60%',
+					height: '80%',
+					center: ['50%', '45%']
+				}
+			},
+			series: [seriesGrade]
+		});
+		
 	});
-
+	
 });

@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author Aaron
- * @description :判断用户登录
+ * @description :判断请求方法是否需要用户Token登录，默认为True
  * @Date 2020/6/1
  */
 @Target({ElementType.METHOD,ElementType.TYPE})

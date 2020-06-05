@@ -16,12 +16,9 @@ import java.util.Map;
  */
 //@Mapper
 public interface TUserMapper {
+    Map<String,Object> selectAllUserGrade();
     //查找每个月份注册用户数量
-    Map<String,Object> selectUserCountsByMonth(@Param("value1")int value1,
-                                               @Param("value2")int value2, @Param("value3")int value3, @Param("value4")int value4,
-                                               @Param("value5")int value5, @Param("value6")int value6, @Param("value7")int value7,
-                                               @Param("value8")int value8, @Param("value9")int value9, @Param("value10")int value10,
-                                               @Param("value11")int value11, @Param("value12")int value12);
+    Map<String,Object> selectUserCountsByMonth(@Param("year")int year);
 
     //所有不诚信用户 分页交给前台
     List<TUser> selectUnhonestUsers();

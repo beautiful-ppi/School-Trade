@@ -1,8 +1,8 @@
 package com.jinyuan.framework.interceptor;
 
-
-import com.jinyuan.framework.annotation.ManagerLogin;
+import com.jinyuan.framework.annotation.ManagerLoginToken;
 import com.jinyuan.framework.annotation.PassToken;
+import com.jinyuan.framework.annotation.UserLoginToken;
 import com.jinyuan.framework.token.TokenService;
 import com.jinyuan.project.service.impl.TManegerServiceImpl;
 import com.jinyuan.project.service.impl.TUserServiceImpl;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
@@ -51,53 +50,57 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             }
         }
         //检查有没有需要管理员权限的注解
-        if (method.isAnnotationPresent(ManagerLogin.class)) {
-            ManagerLogin managerLogin = method.getAnnotation(ManagerLogin.class);
+        if (method.isAnnotationPresent(ManagerLoginToken.class)) {
+            ManagerLoginToken managerLogin = method.getAnnotation(ManagerLoginToken.class);
             if (managerLogin.required()) {
                 // 执行认证
                 if (token == null) {
                     throw new RuntimeException("无token，请重新登录！");
                 }
 
-                if (!tokenService.verifyToken(token)) {
+                if (!tokenService.verifyManagerToken(token)) {
                     throw new RuntimeException("token验证错误！");
                 }
                 return true;
             }
+            return true;
         }
-        return true;
-    }
+
+
         //检查有没有需要用户权限的注解
-        /*if (method.isAnnotationPresent(UserLoginToken.class)) {
+        if (method.isAnnotationPresent(UserLoginToken .class)) {
             UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
             if (userLoginToken.required()) {
                 // 执行认证
                 if (token == null) {
                     throw new RuntimeException("无token，请重新登录");
                 }
+                if (!tokenService.verifyUserToken(token)) {
+                    throw new RuntimeException("token验证错误！");
+                }
                 // 获取 token 中的 user id
-                String userId;
+                /*String userId;
                 try {
                     userId = JWT.decode(token).getAudience().get(0);
                 } catch (JWTDecodeException j) {
                     throw new RuntimeException("401");
                 }
-                TUser user = tUserService.selectUserByAccountAndPassword(userId);
-                if (user == null) {
-                    throw new RuntimeException("用户不存在，请重新登录");
-                }
+                TUser user = tUserService.selectUserByAccountAndPassword(userId);*/
+
+
                 // 验证 token
-                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
-                try {
+                //JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
+                /*try {
                     jwtVerifier.verify(token);
                 } catch (JWTVerificationException e) {
                     throw new RuntimeException("401");
-                }
+                }*/
                 return true;
             }
+            return true;
         }
         return true;
-    }*/
+    }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {

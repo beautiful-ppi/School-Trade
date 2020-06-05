@@ -244,16 +244,18 @@ public class TUserServiceImpl implements TUserService {
 
     //查找每个月份注册用户数量
     @Override
-    public JSONObject selectUserCountsByMonth(int value1,
-                                              int value2, int value3, int value4,
-                                              int value5, int value6, int value7,
-                                              int value8, int value9, int value10,
-                                              int value11, int value12) {
+    public JSONObject selectUserCountsByMonth(int year) {
         JSONObject jsonObject=new JSONObject();
-        Map<String,Object> register=tuserMapper.selectUserCountsByMonth(value1, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12);
+        Map<String,Object> register=tuserMapper.selectUserCountsByMonth(year);
         jsonObject.put("success",0);
         jsonObject.put("register",register);
 
         return jsonObject;
+    }
+
+    @Override
+    public Map<String, Object> selectAllUserGrade() {
+        Map<String,Object> map=tuserMapper.selectAllUserGrade();
+        return map;
     }
 }

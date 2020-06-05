@@ -3,16 +3,23 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jinyuan.project.mapper.TUserMapper">
+	<!--查找用户等级	-->
+	<select id="selectAllUserGrade" resultType="java.util.Map">
+		select distinct (select count(*) from tuser where grade=1) one,
+		(select count(*) from tuser where grade=2) two,
+		(select count(*) from tuser where grade=3) three,
+		(select count(*) from tuser where grade=4) four from tuser
+	</select>
 
     <!-- 查找每个月份注册用户数量 -->
     <select id="selectUserCountsByMonth" resultType="java.util.Map">
-		select DISTINCT(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=1 and year(date_format(register_date,'%Y-%m-%d'))=#{value1}) one,
-		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=2 and year(date_format(register_date,'%Y-%m-%d'))=#{value2}) two,
-		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=3 and year(date_format(register_date,'%Y-%m-%d'))=#{value3}) three,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=4 and year(date_format(register_date,'%Y-%m-%d'))=#{value4}) four,
-		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=5 and year(date_format(register_date,'%Y-%m-%d'))=#{value5}) five,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=6 and year(date_format(register_date,'%Y-%m-%d'))=#{value6}) six,
-		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=7 and year(date_format(register_date,'%Y-%m-%d'))=#{value7}) seven,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=8 and year(date_format(register_date,'%Y-%m-%d'))=#{value8}) eight,
-		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=9 and year(date_format(register_date,'%Y-%m-%d'))=#{value9}) nine,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=10 and year(date_format(register_date,'%Y-%m-%d'))=#{value10}) ten,
-		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=11 and year(date_format(register_date,'%Y-%m-%d'))=#{value10}) eleven,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=12 and year(date_format(register_date,'%Y-%m-%d'))=#{value12}) twelve
+		select DISTINCT(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=1 and year(date_format(register_date,'%Y-%m-%d'))=#{year}) one,
+		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=2 and year(date_format(register_date,'%Y-%m-%d'))=#{year}) two,
+		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=3 and year(date_format(register_date,'%Y-%m-%d'))=#{year}) three,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=4 and year(date_format(register_date,'%Y-%m-%d'))=#{year}) four,
+		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=5 and year(date_format(register_date,'%Y-%m-%d'))=#{year}) five,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=6 and year(date_format(register_date,'%Y-%m-%d'))=#{year}) six,
+		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=7 and year(date_format(register_date,'%Y-%m-%d'))=#{year}) seven,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=8 and year(date_format(register_date,'%Y-%m-%d'))=#{year}) eight,
+		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=9 and year(date_format(register_date,'%Y-%m-%d'))=#{year}) nine,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=10 and year(date_format(register_date,'%Y-%m-%d'))=#{year}) ten,
+		(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=11 and year(date_format(register_date,'%Y-%m-%d'))=#{year}) eleven,(select count(*) from tuser where month(date_format(register_date,'%Y-%m-%d'))=12 and year(date_format(register_date,'%Y-%m-%d'))=#{year}) twelve
 		from tuser
 
 	</select>

@@ -12,12 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface TUserService {
+    //查找用户等级
+    Map<String,Object> selectAllUserGrade();
     //查找每个月份注册用户数量
-    JSONObject selectUserCountsByMonth(@Param("value1")int value1,
-                                       @Param("value2")int value2, @Param("value3")int value3, @Param("value4")int value4,
-                                       @Param("value5")int value5, @Param("value6")int value6, @Param("value7")int value7,
-                                       @Param("value8")int value8, @Param("value9")int value9, @Param("value10")int value10,
-                                       @Param("value11")int value11, @Param("value12")int value12);
+    JSONObject selectUserCountsByMonth(@Param("year")int year);
 
     //查询不诚信用户决定分页查询还是条件查询
     List<TUser> selectUnhonestUserPageOrCondition(int pageNo,int pageSize);

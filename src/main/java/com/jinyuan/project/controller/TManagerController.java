@@ -1,20 +1,20 @@
 package com.jinyuan.project.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jinyuan.framework.annotation.ManagerLogin;
+import com.jinyuan.framework.annotation.ManagerLoginToken;
 import com.jinyuan.project.domain.TManager;
-import com.jinyuan.framework.annotation.PassToken;
 import com.jinyuan.framework.token.TokenService;
 import com.jinyuan.framework.web.Result;
 import com.jinyuan.project.service.impl.TManegerServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+
 
 /**
  * @author Aaron
@@ -22,17 +22,18 @@ import java.util.List;
  * @Date 2020/5/28
  */
 @RestController
-@CrossOrigin
+@CrossOrigin()
 public class TManagerController {
     @Autowired
     TManegerServiceImpl tManagerServiceImpl;
     @Autowired
     TokenService tokenService;
 
+    private static final Logger log= LoggerFactory.getLogger(TManagerController.class);
 
     //分页显示管理员信息
     @RequestMapping(value="selectAdminByPage")//produces="text/json;charset=UTF-8"
-    @ManagerLogin
+    //@ManagerLogin
     public Result selectAdminByPage(@RequestParam(value = "pageNo" ,required=false)int pageNo,@RequestParam(value = "pageSize" ,required=false)int pageSize) {
 
         List<TManager> tManagerList=tManagerServiceImpl.selectAllManagers(pageNo,pageSize);
@@ -43,7 +44,7 @@ public class TManagerController {
 
     //根据管理员id显示管理员详细信息
     @RequestMapping(value="selectDetailManageById/{_id}")
-    @ManagerLogin
+    //@ManagerLoginToken
     public Result selectDetailManageById(@PathVariable("_id")int _id){
         TManager tManager=tManagerServiceImpl.selectDetailManageById(_id);
 
@@ -52,9 +53,13 @@ public class TManagerController {
 
     //根据_id删除管理员
     @RequestMapping(value="deleteManagerById/{_id}")
-    @ManagerLogin
+    @ManagerLoginToken
     public Result deleteManagerById(@PathVariable("_id")int _id) {
 
+        //判断是否是超级管理员
+        if (_id==123456789){
+            return Result.error("admin超级管理员不可以删除");
+        }
         int row=tManagerServiceImpl.deleteManagerById(_id);
         if (row>0){
             return Result.success("删除管理员成功！");
@@ -64,7 +69,7 @@ public class TManagerController {
 
     //修改管理员信息
     @RequestMapping(value="updateManager")
-    @ManagerLogin
+    @ManagerLoginToken
     public Result updateManager(@RequestParam("_id")int _id, @RequestParam(required=false,value="photo")MultipartFile photo,
                                 @RequestParam("password")String password, @RequestParam("name")String name, @RequestParam("mobile")String mobile, @RequestParam("weixin")String weixin, HttpServletRequest request) throws IOException{
 
@@ -82,6 +87,8 @@ public class TManagerController {
     public JSONObject selectAdminastratorByAccountAndPass(@RequestParam("account")String account,@RequestParam("password")String password) {
 
         JSONObject jsonObject=new JSONObject();
+
+        log.debug("管理员登录账号密码----",account+password);
 
         TManager tManager=tManagerServiceImpl.selectAdminastratorByAccountAndPass(account, password);
         if (tManager==null){
@@ -120,7 +127,7 @@ public class TManagerController {
 
     //添加新的管理员
     @RequestMapping(value="insertAdminastrator")
-    @ManagerLogin
+    @ManagerLoginToken
     public Result insertAdminastrator(@RequestParam("account")String account,@RequestParam("password")String password,
                                       @RequestParam("name")String name,@RequestParam("mobile")String mobile,
                                       @RequestParam("weixin")String weixin,@RequestParam(required=false,value="photo") MultipartFile photo,

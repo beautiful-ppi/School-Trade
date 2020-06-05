@@ -1,11 +1,9 @@
 package com.jinyuan.project.controller;
 
-import com.jinyuan.framework.annotation.ManagerLogin;
 import com.jinyuan.framework.web.Result;
 import com.jinyuan.project.service.impl.TThingsComplainJudgeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 

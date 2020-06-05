@@ -2,8 +2,8 @@ package com.jinyuan.project.controller;
 
 import com.alibaba.fastjson.JSONObject;
 
+import com.jinyuan.framework.annotation.ManagerLoginToken;
 import com.jinyuan.project.domain.TUser;
-import com.jinyuan.framework.annotation.ManagerLogin;
 import com.jinyuan.framework.token.TokenService;
 import com.jinyuan.framework.web.Result;
 import com.jinyuan.project.service.impl.TUserServiceImpl;
@@ -36,12 +36,12 @@ public class TUserController {
     //查找每个月份注册用户数量
     @RequestMapping(value="selectUserCountsByMonth")
     public JSONObject selectUserCountsByMonth(@RequestParam("year")int year){
-        return tuserServiceImpl.selectUserCountsByMonth(year,year,year,year,year, year,year,year,year,year,year,year);
+        return tuserServiceImpl.selectUserCountsByMonth(year);
     }
 
     //不诚信交易详情信息
     @RequestMapping(value="selectUnhonestTradeDetail/{_id}")
-    @ManagerLogin
+    @ManagerLoginToken
     public Result selectUnhonestTradeDetail(@PathVariable("_id")int _id,HttpServletRequest request) {
         log.info("token"+request.getHeader("token"));
 
@@ -60,7 +60,7 @@ public class TUserController {
 
     //分页显示不诚信用户
     @RequestMapping(value="selectUnhonestUser")
-    @ManagerLogin //测试管理员登录
+    @ManagerLoginToken //测试管理员登录
     public Result selectUnhonestUser(@RequestParam(required=false,value="pageNo")int pageNo,@RequestParam(required=false,value="pageSize")int pageSize) {
 
 
@@ -162,7 +162,7 @@ public class TUserController {
 
     //用户登录
     @RequestMapping(value="selectUserByAccountAndPassword")
-    public JSONObject selectUserByAccountAndPassword(HttpServletRequest request,@RequestParam("account")String account,@RequestParam("password")String password) {
+    public JSONObject selectUserByAccountAndPassword(@RequestParam("account")String account,@RequestParam("password")String password) {
 
         JSONObject jsonObject=new JSONObject();
         TUser tuser=tuserServiceImpl.selectUserByAccountAndPassword(account, password);
@@ -184,4 +184,12 @@ public class TUserController {
 
 
     }
+
+    //查询所有用户等级
+    @RequestMapping(value = "selectAllUserGrade")
+    public Result selectAllUserGrade(){
+        Map<String,Object> map=tuserServiceImpl.selectAllUserGrade();
+        return Result.success("所有用户等级",map);
+    }
+
 }

@@ -119,7 +119,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+        <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt jwt有多个版本-->
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
