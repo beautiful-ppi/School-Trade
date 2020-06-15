@@ -44,7 +44,7 @@ spring:
     static-path-pattern: /**
     #静态资源存放位置
   resources:
-    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/imagesUpload/,classpath:/images/
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/schoolTrade/imagesUpload/,classpath:/images/
   #rabbitmq配置
 #  rabbitmq:
 #    host: 192.168.1.103

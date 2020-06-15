@@ -74,7 +74,6 @@ public class TRequestMatchServiceImpl implements TRequestMatchService {
     //需求匹配结果总数
 	/*@Override
 	public Integer selectTotalRequestMatchInfo(Page page) {
-		// TODO Auto-generated method stub
 		return trequestMatchMapper.selectTotalRequestMatchInfo(page);
 	}*/
 

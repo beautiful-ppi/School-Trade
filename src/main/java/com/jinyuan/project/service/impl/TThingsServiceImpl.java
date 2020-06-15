@@ -1,10 +1,12 @@
 package com.jinyuan.project.service.impl;
 
 import com.jinyuan.project.domain.TThings;
+import com.jinyuan.project.domain.TThingsPhotos;
 import com.jinyuan.project.domain.TTrade;
 import com.jinyuan.project.domain.TUser;
 import com.jinyuan.framework.web.Result;
 import com.jinyuan.project.mapper.TThingsMapper;
+import com.jinyuan.project.mapper.TThingsPhotosMapper;
 import com.jinyuan.project.service.TThingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,8 @@ public class TThingsServiceImpl implements TThingsService {
 
     @Autowired
     TThingsMapper tthingsMapper;
+    @Autowired
+    TThingsPhotosMapper tThingsPhotosMapper;
 
     private static final Logger log= LoggerFactory.getLogger(TThingsServiceImpl.class);
     //查找所有二手货售卖信息
@@ -64,20 +68,17 @@ public class TThingsServiceImpl implements TThingsService {
         Date date=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         tthings.setPublish_date(sdf.format(date));
+        String photoname="";
 
-        //HashMap<String,String> photoNameMap=new HashMap<>();
+        TThingsPhotos tThingsPhotos=new TThingsPhotos();
 
         try {
             if (photos.length>0){
                 for (MultipartFile photo:photos){
-                    /*Integer i=1++;
-
-                    String ptname= "photo"+i.toString();
-                    photoNameMap.put(ptname,photo.getOriginalFilename());
-                    */
-
-                    String photoname=_owner+"-"+photo.getOriginalFilename();
-                    String path="D:\\imagesUpload\\thingsImages\\"+tthings.get_id();
+                    Integer i=0;
+                    //使用i++进行同名字的图片区分
+                    photoname=tthings.get_id()+"-"+String.valueOf(i++)+"-"+photo.getOriginalFilename();
+                    String path="D:\\schoolTrade\\imagesUpload\\thingsImages\\"+tthings.get_id();
                     File dir=new File(path);
                     //判断是否存在目录
                     if (!dir.exists()){
@@ -89,6 +90,9 @@ public class TThingsServiceImpl implements TThingsService {
                     if (!file.exists()){
                         photo.transferTo(file);
                     }
+
+
+
                 }
             }
         }catch(Exception e) {
@@ -193,7 +197,7 @@ public class TThingsServiceImpl implements TThingsService {
     //修改商品
     @Override
     public Result updateMyTthingsNoThings(String thing_name, float new_old, String memo, float price, int exchangeable,
-                                          int _id, MultipartFile[] photo1,
+                                          int _id, MultipartFile[] photos,
                                           HttpServletRequest request) {
 
         TThings tthings=new TThings();
@@ -205,12 +209,30 @@ public class TThingsServiceImpl implements TThingsService {
         tthings.setExchangeable(exchangeable);
 
         try {
-            if(photo1==null) {
+            if(photos==null) {
                 //无图片修改
                 tthingsMapper.updateMyTthingsNoThings(thing_name, new_old, memo, price, exchangeable, _id);
             }else {
                 //带图片修改
-                if(photo1.length==1&&photo1[0]!=null){
+                for (MultipartFile photo:photos){
+                    Integer i=0;
+                    String photoname=tthings.get_id()+"-"+String.valueOf(i++)+"-"+photo.getOriginalFilename();
+                    String path="D:\\schoolTrade\\imagesUpload\\thingsImages\\"+tthings.get_id();
+                    File dir=new File(path);
+                    //判断是否存在目录
+                    if (!dir.exists()){
+                        dir.mkdir();
+                    }
+                    //保存文件
+                    File file=new File(dir,photoname);
+                    //是否存在文件
+                    if (!file.exists()){
+                        photo.transferTo(file);
+                    }
+                }
+
+                //之前代码
+                /*if(photo1.length==1&&photo1[0]!=null){
                     photo1[0].transferTo(new File(request.getSession().getServletContext().getRealPath("/images/"+photo1[0].getOriginalFilename())));
                     tthings.setPicture1(photo1[0].getOriginalFilename());
                 }else if(photo1.length==2&&photo1[0]!=null&&photo1[1]!=null){
@@ -231,7 +253,7 @@ public class TThingsServiceImpl implements TThingsService {
 
                     photo1[2].transferTo(new File(request.getSession().getServletContext().getRealPath("/images/"+photo1[2].getOriginalFilename())));
                     tthings.setPicture3(photo1[2].getOriginalFilename());
-                }
+                }*/
 
             }
         }catch(Exception e) {

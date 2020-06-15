@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Aaron
@@ -30,6 +31,7 @@ public class TokenService {
 
     @Autowired
     RedisTemplate redisTemplate;
+
     /*
      * @Author: Aaron
      * @Param:
@@ -42,7 +44,11 @@ public class TokenService {
 
     @Cacheable(value = "managerToken",keyGenerator = "TokenkeyGenerator")
     public String getTokenManager(TManager tManager) {
-        String token= JWT.create().withExpiresAt(new Date(System.currentTimeMillis()+60*60)).withAudience(tManager.get_id().toString())// 将 user id 保存到 token 里面
+        //String value="managerTokenValue";
+        //使用redis工具类进行缓存
+        //RedisCache redisCache =new RedisCache();
+        //token过期时间   .withExpiresAt(new Date(System.currentTimeMillis()+60*60))
+        String token= JWT.create().withAudience(tManager.get_id().toString())// 将 user id 保存到 token 里面
                 .sign(Algorithm.HMAC256(tManager.getPassword()));// 以 password 作为 token 的密钥
         return token;
     }

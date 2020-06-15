@@ -8,6 +8,8 @@ import com.jinyuan.project.service.TManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
@@ -29,6 +31,7 @@ public class TManegerServiceImpl implements TManagerService {
 
     //添加新的管理员
     @Override
+    @Transactional(rollbackFor={IllegalArgumentException.class},isolation = Isolation.READ_COMMITTED)
     public Result insertAdminastrator(String account, String password, String name,
                                       String mobile, String weixin, MultipartFile photo, HttpServletRequest request) {
 
@@ -46,12 +49,11 @@ public class TManegerServiceImpl implements TManagerService {
         tManager.setCreate_date(sdf.format(date));
 
         String photoname="";
-
         try {
             if(photo!=null){
                 photoname=tManager.get_id()+"-"+photo.getOriginalFilename();
                 //创建目录
-                String path="D:\\imagesUpload\\managerIcon\\";
+                String path="D:\\schoolTrade\\imagesUpload\\managerIcon\\";
                 File dir=new File(path);
                 //判断是否存在目录
                 if (!dir.exists()){
@@ -84,17 +86,19 @@ public class TManegerServiceImpl implements TManagerService {
         }
         tManager.setPhoto(photoname);
 
-
+        TManager test=tmanagerMapper.selectAdminastratorByAccount(account);
         //判断是否存在账号
-        if(tmanagerMapper.selectAdminastratorByAccount(account)!=null) {
-            return Result.error("账号已存在！");
+        int row=tmanagerMapper.insertAdminastrator(tManager);
+        if(test!=null) {
+            throw new IllegalArgumentException(tManager.getAccount()+"账号已经存在,事务回滚");
         }
 
-        int row=tmanagerMapper.insertAdminastrator(tManager);
-        if (row>0){
-            return Result.success("新增管理员成功！",tManager.get_id());
-        }
-        return Result.error("新增管理员成功！");
+//        if (row>0){
+//            return Result.success("新增管理员成功！",tManager.get_id());
+//        }
+
+
+        return Result.success("新增管理员成功！"+row,tManager.get_id());
 
     }
 
@@ -146,7 +150,7 @@ public class TManegerServiceImpl implements TManagerService {
                 //String path=ResourceUtils.getURL("classpath:").getPath()+"images/"+photoName;
                 photoName=_id+"-"+photo.getOriginalFilename();
                 //创建目录
-                String path="D:\\imagesUpload\\managerIcon\\";
+                String path="D:\\schoolTrade\\imagesUpload\\managerIcon\\";
                 File dir=new File(path);
                 if (!dir.exists()){
                     dir.mkdir();

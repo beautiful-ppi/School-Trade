@@ -7,6 +7,8 @@ import com.jinyuan.project.mapper.TRequestsMapper;
 import com.jinyuan.project.service.TRequestsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,6 +28,7 @@ public class TRequestsServiceImpl implements TRequestsService {
 
     //查看所有需求信息
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public List<Map<String, Object>> selectAllRequest() {
 
         List<Map<String,Object>> mapList=trequestsMapper.selectAllRequest();

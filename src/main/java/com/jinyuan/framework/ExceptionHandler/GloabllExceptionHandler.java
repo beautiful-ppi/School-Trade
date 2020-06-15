@@ -20,6 +20,7 @@ public class GloabllExceptionHandler {
         e.printStackTrace();
         //抛出异常信息给前端
         JSONObject jsonObject=new JSONObject();
+        //jsonObject.put("success",0);
         jsonObject.put("Code",HttpStatus.ERROR);
         jsonObject.put("message",e.getMessage()==null?"服务器发生错误！":e.getMessage());
         return jsonObject;

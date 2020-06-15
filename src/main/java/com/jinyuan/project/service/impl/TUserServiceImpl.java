@@ -76,7 +76,7 @@ public class TUserServiceImpl implements TUserService {
             if(photo!=null) {
                 //photo.transferTo(new File(request.getSession().getServletContext().getRealPath("/images/"+photo.getOriginalFilename())));
                 photoname=tuser.get_id()+"-"+photo.getOriginalFilename();
-                String path="D:\\imagesUpload\\userIcon\\";
+                String path="D:\\schoolTrade\\imagesUpload\\userIcon\\";
                 File dir=new File(path);
                 if (!dir.exists()){
                     dir.mkdir();
@@ -139,10 +139,21 @@ public class TUserServiceImpl implements TUserService {
         String photoname="";
         try {
             if(photo!=null){
-                photoname=photo.getOriginalFilename();
+                //图片不为空
+                photoname=_id+"-"+photo.getOriginalFilename();
+                String path="D:\\schoolTrade\\imagesUpload\\userIcon\\";
+                File dir=new File(path);
+                if (!dir.exists()){
+                    dir.mkdir();
+                }
+                //保存文件
+                File file=new File(dir,photoname);
+                if (!file.exists()){
+                    photo.transferTo(file);
+                }
             }
-            //图片不为空
-            photo.transferTo(new File(request.getSession().getServletContext().getRealPath("/images/"+photo.getOriginalFilename())));
+
+            //photo.transferTo(new File(request.getSession().getServletContext().getRealPath("/images/"+photo.getOriginalFilename())));
 
         }catch(Exception e) {
             e.printStackTrace();
