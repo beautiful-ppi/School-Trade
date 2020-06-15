@@ -16,7 +16,7 @@ SQL文件：school-trade/sql
 
 管理端页面目录：school-trade/Manage-UI
 
-管理端地址：http://127.0.0.1:8848/Manage-UI/html/login.html
+管理端地址：http://127.0.0.1:8848/Manage-UI/index.html
 
 管理员账号：admin
 
@@ -26,8 +26,6 @@ SQL文件：school-trade/sql
 
 图片存放位置  D:\imagesUpload
 
-swagger API生成地址：http://localhost:8000/swagger-ui.html
 
-actutor健康监控地址：http://localhost:8000/actuator/health
 
 ​    
